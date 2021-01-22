@@ -1,0 +1,137 @@
+.LoginPage,.JoinPage{
+    margin: 0 auto;
+    width: 1200px;
+    height: 750px;
+}
+/* UserLogin CSS Start*/
+.user_container.login{
+    width: 100%;
+    height: 760px;
+    display: inline-block;
+    background-image: url(../img/login_background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.user_container.login .login_form{
+    width: 500px;
+    height: 500px;
+    margin: 100px auto;
+    border: 1px solid;
+    border-radius: 50px;
+    background-color: white;
+}
+.user_container.login .blind{
+    width: 120px;
+    height: 50px;
+    margin: 0 auto;
+    font-size: 1.5em;
+    color: #8696FF;
+    padding: 10px;
+    margin-top: 30px;
+}
+
+.user_container.login .join_row{
+    padding: 10px;
+}
+.user_container.login .join_row input{
+    width: 90%;
+    padding:15px;
+    margin: 10px;
+    border: 1px solid;
+    border-radius: 20px;
+}
+.user_container.login .button_area{
+    width: 100%;
+    margin-top: 30px;
+}
+.user_container.login .button_area .btn_type.btn_primary{
+    display: block;
+    width: 100px;
+    height: 50px;
+    border-radius: 30px;
+    margin: 0 auto;
+    background-color: #1836FF;
+    border : none;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.user_container.login .join_signup{
+    width: 100%;
+    height: 120px;
+    background-color: #F3F5FF;
+    border-radius: 0 0 55px 55px;
+}
+.user_container.login .join_signup p{
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.user_container.login .join_signup{
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+}
+.user_container.login .join_signup a{
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    color: #7B8CFF;
+    text-decoration: none;
+}
+/* ////////////////////// */
+/* UserJoin CSS Start */
+/* ////////////////////// */
+.user_container.Join .join_form{
+    width: 600px;
+    height: 100%;
+    margin: 10px auto;
+    border: 1px solid;
+    border-radius: 50px;
+    background-color: white;
+}
+.user_container.Join .blind{
+    width: 120px;
+    height: 50px;
+    margin: 0 auto;
+    font-size: 1.5em;
+    color: #8696FF;
+    padding: 10px;
+    margin-top: 20px;
+}
+.user_container.Join .join_row{
+    padding: 10px;
+}
+.user_container.Join .join_row label{
+    display: block;
+    padding-left: 20px;
+}
+.user_container.Join .join_row input{
+    width: 90%;
+    padding:10px;
+    margin: 10px;
+    border: 1px solid;
+    border-radius: 20px;
+}
+
+.user_container.Join .button_area{
+    text-align: center;
+}
+
+.user_container.Join .button_area .btn_type.btn_primary{
+    width: 100px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: #1836FF;
+    border : none;
+    color: white;
+    margin: 20px;
+}
+.user_container.login .button_area .btn_type.btn_primary:hover{
+    background-color: red;
+}
+.user_container.Join .button_area .btn_type.btn_primary:hover{
+    background-color: red;
+}

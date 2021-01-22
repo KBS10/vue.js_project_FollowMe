@@ -1,0 +1,79 @@
+.AdminPage .adminpage_header {
+    display: block;
+}
+
+.AdminPage .AdminPage_logo {
+    float: left;
+}
+
+.v-tab {
+    width: 300px;
+}
+
+.v-card__text {
+    background-color: skyblue;
+}
+
+/* //////////////////////////////////////////////////// */
+/* Beacon Control CSS  */
+/* //////////////////////////////////////////////////// */
+.BeaconControl {
+    width: 100%;
+}
+
+.BeaconControl .beaconControl_button {
+    background-color: blue;
+}
+
+.BeaconControl .beaconControl_showBeaconButton {
+    margin: 0 5px;
+}
+
+/* //////////////////////////////////////////////////// */
+/* Beacon Info CSS  */
+/* //////////////////////////////////////////////////// */
+
+/* #keyword {
+    margin-left: 10px;
+    background-color: white;
+    text-align: center;
+  }
+  #keyword_text {
+    margin: 5px;
+    height: 20px;
+    background-color: white;
+  } */
+.search {
+    background-color: yellow;
+    width: 50px;
+    height: 20px;
+}
+
+.beaconinfo_showBeaconInfo {
+    width: 100%;
+    margin-top: 10px;
+    background-color: wheat;
+    text-align: center;
+    font-weight: bold;
+}
+
+.beaconinfo_beaconCategory {
+    background-color: rgb(255, 143, 166);
+}
+
+.beaconinfo_showBeaconInfo td {
+    width: 150px;
+}
+
+/* //////////////////////////////////////////////////// */
+/* Beacon Info Input CSS  */
+/* //////////////////////////////////////////////////// */
+.BeaconInfoInput .BeaconRows .BeaconRows-BeaconRowWrap .Input_Beacon_Info {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+#count {
+    font-weight: bold;
+    font-size: 1.5em;
+}

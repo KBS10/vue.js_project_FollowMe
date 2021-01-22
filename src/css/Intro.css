@@ -1,0 +1,29 @@
+.container.intro {
+    width: 1200px;
+    margin: 0 auto;
+  }
+.container.intro .intro_title {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 700;
+    color: #1836FF;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1.5em;
+  }
+.container.intro .intro_button_area {
+    width: 1200px;
+    height: 480px;
+    text-align: center;
+    font-size: 30px;
+    color: black;
+  }
+.container.intro .intro_button_area .intro_router{
+    display: inline-block;
+    background-size: cover;
+    text-decoration: none;
+    border: solid 1px;
+    border-radius: 50px;
+    margin: 20px;
+    padding: 30px;
+  }

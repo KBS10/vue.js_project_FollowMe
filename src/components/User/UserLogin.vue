@@ -1,0 +1,85 @@
+<template>
+  <div class="user_container login">
+    <form class="login_form" @submit.prevent>
+      <div class="blind">Sign In</div>
+      <div class="join_row">
+        <input
+          type="text"
+          name="email"
+          id="email"
+          placeholder="email"
+          v-model="email"
+        />
+      </div>
+      <div class="join_row">
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="password"
+          v-model="password"
+        />
+      </div>
+      <div class="button_area">
+        <button class="btn_type btn_primary" @click="login()">Sign in</button>
+        <div class="join_signup">
+          <p>회원가입을 아직 하지 않으셨습니까?</p>
+          <router-link :to="{ name: 'Join' }">
+            <a>회원가입</a>
+          </router-link>
+        </div>
+        <!-- <button class="btn_type btn_primary" @click="logout()">로그아웃</button> -->
+      </div>
+    </form>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  name: "UserLogin",
+  data() {
+    return {
+      email: null,
+      password: null,
+      token: null
+    };
+  },
+  methods: {
+    login() {
+      // axios
+      //   .post("http://172.26.3.122:8000/api/auth/login", {
+      //     email: this.email,
+      //     password: this.password
+      //   })
+      //   .then(response => {
+      //     console.log(response);
+      //     this.token = response.data.token;
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     alert(err);
+      //   });
+      this.$router.replace("/admin");
+    },
+    join() {},
+    logout() {
+      axios
+        .post("http://172.26.3.122:8000/api/auth/logout", [], {
+          headers: {
+            Authorization: "Bearer " + this.token
+          }
+        })
+        .then(response => {
+          console.log(this.token);
+          console.log(response);
+          alert(response);
+        })
+        .catch(err => {
+          console.log(err);
+          alert(err);
+        });
+    }
+  }
+};
+</script>
