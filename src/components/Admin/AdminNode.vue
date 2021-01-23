@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import GoogleMap from "./GoogleMap/GoogleMap";
+import GoogleMap from "../GoogleMap/GoogleMap";
 import NodeControl from "./Node/NodeControl";
 import NodeConnect from "./Node/NodeConnect";
 

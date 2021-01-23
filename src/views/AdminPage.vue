@@ -16,6 +16,7 @@
         </v-tab>
       </v-tabs>
     </v-card-title>
+    <hr />
     <!-- 메인메뉴 card-box (vTabs) -->
 
     <!-- 메인template card-box (vTabsItems) -->
@@ -23,7 +24,7 @@
       <v-tab-item v-for="item in items" :key="item">
         <v-card v-if="item === items[0]" flat>
           <v-card-text id="AdminMain">
-            <h1>Admin 페이지입니다.</h1>
+            <AdminMain></AdminMain>
           </v-card-text>
         </v-card>
         <v-card v-else-if="item === items[1]" flat>
@@ -43,11 +44,13 @@
 </template>
 
 <script>
+import AdminMain from "../components/Admin/AdminMain";
 import AdminBeacon from "../components/Admin/AdminBeacon";
 import AdminNode from "../components/Admin/AdminNode";
 
 export default {
   components: {
+    AdminMain,
     AdminBeacon,
     AdminNode
   },

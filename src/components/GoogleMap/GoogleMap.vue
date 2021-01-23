@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { EventBus } from "../../../utils/bus";
+import { EventBus } from "../../utils/bus";
 export default {
   props: ["handelOnClick"],
   data: () => ({
@@ -20,7 +20,7 @@ export default {
       disableDefaultUI: true,
       mapTypeControl: true,
       mapTypeControlOptions: {
-        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU
       }
     },
     floorimage: {
@@ -32,8 +32,6 @@ export default {
     beaconImage:
       "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png"
   }),
-  computed: {},
-  created() {},
   mounted() {
     this.initMap();
   },

@@ -1,20 +1,23 @@
 <template>
-  <div class="BeaconControl">
+  <div class="BeaconControlButton">
     <h1>비콘 추가 및 삭제</h1>
-    <div class="beaconControl_button">
-      <v-btn style="width: 115px" @click="clearMarker()">비콘 숨기기</v-btn>
+    <div class="beaconcontrolbutton_explain">
+      지도를 클릭하면 비콘의 위치를 찍을 수 있습니다.
+    </div>
+    <div class="beaconcontrolbutton_button">
       <v-btn
         style="width: 125px"
-        class="beaconControl_showBeaconButton"
+        class="beaconcontrolbutton btn_primary"
         @click="showMarkers()"
         >모든 비콘 보이기</v-btn
       >
-      <v-btn style="width: 115px" @click="deleteMarkers()"
+      <v-btn
+        style="width: 125px"
+        class="beaconcontrolbutton btn_primary"
+        @click="deleteMarkers()"
         >모든 비콘 삭제</v-btn
       >
     </div>
-
-    <div id="beaconInfoInput"></div>
   </div>
 </template>
 
@@ -26,14 +29,14 @@ export default {
     return {
       beaconMap: null,
       beaconImage:
-        "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png"
+        "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
     };
   },
   created() {},
   mounted() {
-    EventBus.$on("Map", function(value) {
+    EventBus.$on("Map", function (value) {
       this.beaconMap = value;
-      // console.log("이벤트를 전달받음. 전달받은 값 : ", this.beaconMap)
+      console.log("이벤트를 전달받음. 전달받은 값 : ", this.beaconMap);
     });
   },
   methods: {
@@ -46,7 +49,6 @@ export default {
     // 마커 하면에서 만 안보이고 배열에는 정의되어있음
     clearMarker() {
       this.setMaponAll(null);
-      console.log("비콘 숨기기");
     },
     // 모든 마커 보이기
     showMarkers() {
@@ -58,7 +60,7 @@ export default {
       this.clearMarker();
       this.$store.state.markers = [];
       console.log("비콘 데이터 삭제");
-    }
-  }
+    },
+  },
 };
 </script>

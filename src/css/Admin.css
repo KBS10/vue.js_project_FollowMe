@@ -10,45 +10,191 @@
     width: 300px;
 }
 
-.v-card__text {
-    background-color: skyblue;
-}
 
 /* //////////////////////////////////////////////////// */
-/* Beacon Control CSS  */
+/* Admin Beacon CSS */
 /* //////////////////////////////////////////////////// */
-.BeaconControl {
+.AdminBeacon .adminbeacon_content{
+    display: block;
+}
+
+.AdminBeacon .adminbeacon_menubar {
+    display: block;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.AdminBeacon .adminbeacon_GoogleMap {
+    width: 800px;
+    height: 400px;
+    float: left;
+}
+
+.AdminBeacon .adminbeacon_beaconInfoWrap {
+    float: right;
+    display: block;
+    width: 360px;
+}
+.AdminBeacon .adminbeacon_beaconInfoInput {
+    display: block;
     width: 100%;
 }
 
-.BeaconControl .beaconControl_button {
-    background-color: blue;
+/* //////////////////////////////////////////////////// */
+/* Admin Main CSS  */
+/* //////////////////////////////////////////////////// */
+.AdminMain {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
 }
 
-.BeaconControl .beaconControl_showBeaconButton {
-    margin: 0 5px;
-}
-
-/* //////////////////////////////////////////////////// */
-/* Beacon Info CSS  */
-/* //////////////////////////////////////////////////// */
-
-/* #keyword {
-    margin-left: 10px;
-    background-color: white;
+.AdminMain .admin_content.left {
+    width: 300px;
+    height: 500px;
+    float: left;
     text-align: center;
-  }
-  #keyword_text {
-    margin: 5px;
-    height: 20px;
-    background-color: white;
-  } */
-.search {
-    background-color: yellow;
-    width: 50px;
-    height: 20px;
+    font-weight: bolder;
 }
 
+.admin_content.left .adminmain_word {
+    text-align: center;
+    display: inline-block;
+    margin-top: 100px;
+}
+
+.admin_content.left .adminmain_word .adminmain_follow {
+    float: left;
+    font-size: 4em;
+    color: #1F5AFF;
+}
+
+.admin_content.left .adminmain_word .adminmain_me {
+    float: right;
+    padding: 0 20px;
+    font-size: 4em;
+    color: #707070;
+}
+
+.admin_content.left .adminmain_explain {
+    color: #707070;
+    margin-top: 20px;
+}
+
+.admin_content.left .adminmain_member {
+    color: #122AA3;
+    margin-top: 50px;
+}
+
+.admin_content.left .btn_primary {
+    background-color: #122AA3;
+    color: white;
+    margin-top: 50px;
+    border-radius: 50px;
+}
+
+.admin_content.left .btn_primary:hover {
+    background-color: #FF2424;
+}
+
+.AdminMain .admin_content.right {
+    float: right;
+    width: 850px;
+    height: 400px;
+    border-radius: 100px;
+    background-image: url(../img/adminMain_img.png);
+    background-repeat: no-repeat;
+    background-size: none;
+}
+
+/* //////////////////////////////////////////////////// */
+/* Beacon Control Button CSS  */
+/* //////////////////////////////////////////////////// */
+.BeaconControlButton{
+    display: block;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+}
+.BeaconControlButton h1{
+    margin: 20px;
+    margin-top: 100px;
+    color:  #1F5AFF;
+}
+.BeaconControlButton .beaconcontrolbutton_explain {
+    font-weight: bolder;
+    color:  #707070;
+}
+
+.BeaconControlButton .beaconcontrolbutton_beaconInfoWrap {
+    width: 100%;
+}
+.BeaconControlButton .beaconcontrolbutton_button {
+    margin-top: 30px;
+}
+.BeaconControlButton .beaconcontrolbutton.btn_primary {
+    background-color: #1F5AFF;
+    color: white;
+    width: 200px;
+    margin: 0 10px;
+    border-radius: 30px;
+}
+
+.BeaconControlButton .beaconcontrolbutton_showBeaconButton {
+    margin: 0 10px;
+}
+
+/* /////////////////////////////////////////////////// */
+/* Beacon Info Button CSS  */
+/* /////////////////////////////////////////////////// */
+
+.BeaconInfoButton {
+    display: block;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+}
+
+.BeaconInfoButton h1{
+    color:  #1F5AFF;
+    margin-top: 100px;
+}
+.BeaconInfoButton p{
+    color:  #1F5AFF;
+    font-weight: bolder;
+    margin-top :10px;
+    font-size: 2em;
+}
+
+.BeaconInfoButton .beaconInfobutton_explain {
+    font-weight: bolder;
+    margin-top :30px;
+    color:  #707070;
+}
+
+.BeaconInfoButton .beaconInfobutton {
+    margin-top: 30px;
+}
+.BeaconInfoButton .beaconInfobutton.btn_primary {
+    background-color: #1F5AFF;
+    color: white;
+    width: 200px;
+    margin: 20px 10px;
+    border-radius: 30px;
+}
+
+/* /////////////////////////////////////////////////// */
+/* Beacon Info  CSS  */
+/* /////////////////////////////////////////////////// */
+
+.BeaconInfo {
+    display: block;
+    width: 100%;
+}
+.BeaconInfo h1{
+    line-height: 80px;
+    text-align: center;
+}
 .beaconinfo_showBeaconInfo {
     width: 100%;
     margin-top: 10px;
@@ -56,24 +202,41 @@
     text-align: center;
     font-weight: bold;
 }
-
-.beaconinfo_beaconCategory {
-    background-color: rgb(255, 143, 166);
+.beaconinfo_showBeaconInfo {
+    width: 700px;
+    margin: 0 auto;
+    border: solid 1px;
+    border-collapse: collapse;
 }
-
-.beaconinfo_showBeaconInfo td {
-    width: 150px;
+.beaconinfo_showBeaconInfo thead{
+    background-color:#BBDEFB;
+    text-align: center;
+}
+.beaconinfo_showBeaconInfo td{
+    border: solid 1px;
 }
 
 /* //////////////////////////////////////////////////// */
-/* Beacon Info Input CSS  */
+/* Beacon Control Info CSS  */
 /* //////////////////////////////////////////////////// */
-.BeaconInfoInput .BeaconRows .BeaconRows-BeaconRowWrap .Input_Beacon_Info {
-    display: inline-block;
-    margin: 0 10px;
+.BeaconControlInfo {
+    display: block;
+    width: 100%;
 }
-
-#count {
-    font-weight: bold;
-    font-size: 1.5em;
+.BeaconControlInfo h1{
+    line-height: 80px;
+    text-align: center;
+}
+.BeaconControlInfo .beaconcontrolInfo_table{
+    width: 700px;
+    margin: 0 auto;
+    border: solid 1px;
+    border-collapse: collapse;
+}
+.beaconcontrolInfo_table thead{
+    background-color:#BBDEFB;
+    text-align: center;
+}
+.beaconcontrolInfo_table td{
+    border: solid 1px;
 }
