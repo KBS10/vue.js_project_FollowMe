@@ -15,16 +15,16 @@
       </thead>
       <tbody>
         <tr v-for="(beacon, i) in this.beaconinfos" :key="i">
-          <td width: 50px>{{ i + 1 }}</td>
+          <td>{{ i + 1 }}</td>
           <input type="text" id="room" v-model="beacon.room" hidden />
           <td>
             <input type="text" v-model="beacon.uuid" />
           </td>
           <td><input type="text" v-model="beacon.major" /></td>
-          <td><input type="text" v-model="beacon.minor" /></td>
+          <td><input type="text" v-model="beacon.beacon_id_minor" /></td>
           <td><input type="text" v-model="beacon.lat" /></td>
           <td><input type="text" v-model="beacon.lng" /></td>
-          <td style="width : 50px">
+          <td>
             <button
               class="beaconcontrolbutton_delete"
               @click="$delete(beaconinfos, i)">
@@ -46,14 +46,12 @@ export default {
     return {
       beaconinfos: [
         {
-          room: "",
           uuid: "",
-          beacon_scanner_id: "",
           major: "",
           beacon_id_minor: "",
           lat: "",
           lng: "",
-          status: "default"
+          check: "create"
         }
       ]
     };
@@ -63,26 +61,24 @@ export default {
       console.log("비콘 추가 버튼");
       console.log(this.beaconinfos);
       this.beaconinfos.push({
-        room: "",
         uuid: "",
-        beacon_scanner_id: "",
         major: "",
         beacon_id_minor: "",
         lat: "",
         lng: "",
-        status: "default"
+        check: "create"
       });
     },
     axiosFunction() {
       console.log("axios 통신");
       console.log(this.beaconinfos);
-      const url = "http://192.168.0.8:8000/api/admin/beacon_create";
+      const url = "http://172.26.3.122:8000/api/admin/beacon_update";
       axios
         .post(url, { beacon: this.beaconinfos })
-        .then(function (response) {
+        .then(response => {
           console.log(response);
         })
-        .catch(function (error) {
+        .catch(error => {
           console.log(error);
         });
     },

@@ -47,19 +47,19 @@ export default {
   },
   methods: {
     login() {
-      // axios
-      //   .post("http://172.26.3.122:8000/api/auth/login", {
-      //     email: this.email,
-      //     password: this.password
-      //   })
-      //   .then(response => {
-      //     console.log(response);
-      //     this.token = response.data.token;
-      //   })
-      //   .catch(err => {
-      //     console.log(err);
-      //     alert(err);
-      //   });
+      axios
+        .post("http://172.26.3.122:8000/api/auth/login", {
+          email: this.email,
+          password: this.password
+        })
+        .then(response => {
+          console.log(response);
+          this.token = response.data.token;
+        })
+        .catch(err => {
+          console.log(err);
+          alert(err);
+        });
       this.$router.replace("/admin");
     },
     join() {},
