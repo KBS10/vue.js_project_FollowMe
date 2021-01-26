@@ -54,24 +54,23 @@ export default {
         })
         .then(response => {
           console.log(response);
-          this.token = response.data.token;
+          this.$store.state.token = response.data.token;
+          this.$router.replace("/admin");
         })
         .catch(err => {
           console.log(err);
           alert(err);
         });
-      this.$router.replace("/admin");
     },
     join() {},
     logout() {
       axios
         .post("http://172.26.3.122:8000/api/auth/logout", [], {
           headers: {
-            Authorization: "Bearer " + this.token
+            Authorization: "Bearer " + this.$store.state.token
           }
         })
         .then(response => {
-          console.log(this.token);
           console.log(response);
           alert(response);
         })

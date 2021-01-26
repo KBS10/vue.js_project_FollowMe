@@ -44,7 +44,7 @@
 <script>
 import GoogleMap from "../GoogleMap/GoogleMap";
 import BeaconInfo from "./Beacon/BeaconInfo";
-import BeaconInfoButton from"./Beacon/BeaconInfoButton";
+import BeaconInfoButton from "./Beacon/BeaconInfoButton";
 import BeaconControlButton from "./Beacon/BeaconControlButton";
 import BeaconControlInfo from "./Beacon/BeaconControlInfo";
 import axios from "axios";
@@ -75,31 +75,31 @@ export default {
     };
   },
   created() {},
-  mounted() {
-    // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
-    this.socket.on("beaconInfo", (data) => {
-      console.log(data);
-      if (this.$store.state.socketBeaconInfo[0].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[0].RSSI = data.RSSI;
-        this.$store.state.socketBeaconInfo[0].Error = data.Error;
-      } else if (this.$store.state.socketBeaconInfo[1].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[1].RSSI = data.RSSI;
-        this.$store.state.socketBeaconInfo[1].Error = data.Error;
-      } else if (this.$store.state.socketBeaconInfo[2].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[2].RSSI = data.RSSI;
-        this.$store.state.socketBeaconInfo[2].Error = data.Error;
-      }
-    });
-    this.socket.on("beaconError", (data) => {
-      if (this.$store.state.socketBeaconInfo[0].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[0].Error = data.Error;
-      } else if (this.$store.state.socketBeaconInfo[1].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[1].Error = data.Error;
-      } else if (this.$store.state.socketBeaconInfo[2].Minor == data.Minor) {
-        this.$store.state.socketBeaconInfo[2].Error = data.Error;
-      }
-    });
-  },
+  // mounted() {
+  //   // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
+  //   this.socket.on("beaconInfo", (data) => {
+  //     console.log(data);
+  //     if (this.$store.state.socketBeaconInfo[0].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[0].RSSI = data.RSSI;
+  //       this.$store.state.socketBeaconInfo[0].Error = data.Error;
+  //     } else if (this.$store.state.socketBeaconInfo[1].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[1].RSSI = data.RSSI;
+  //       this.$store.state.socketBeaconInfo[1].Error = data.Error;
+  //     } else if (this.$store.state.socketBeaconInfo[2].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[2].RSSI = data.RSSI;
+  //       this.$store.state.socketBeaconInfo[2].Error = data.Error;
+  //     }
+  //   });
+  //   this.socket.on("beaconError", (data) => {
+  //     if (this.$store.state.socketBeaconInfo[0].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[0].Error = data.Error;
+  //     } else if (this.$store.state.socketBeaconInfo[1].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[1].Error = data.Error;
+  //     } else if (this.$store.state.socketBeaconInfo[2].Minor == data.Minor) {
+  //       this.$store.state.socketBeaconInfo[2].Error = data.Error;
+  //     }
+  //   });
+  // },
   methods: {
     // 버튼에 따라 컴포넌트 변경하는 함수
     swapComponent(item) {
@@ -112,11 +112,17 @@ export default {
       } else if (this.component == "비콘 정보 및 신호 불량 비콘 확인") {
         this.eventOn = false;
 
-        const url = "http://49.143.18.165:8000/api/admin/beacon_setting_main";
-
+        const url = "http://172.26.3.122:8000/api/admin/beacon_setting_main";
+        // const url = "http://192.168.0.24:8000/api/admin/beacon_setting_main";
+        console.log(this.$store.state.token);
         axios
-          .get(url)
+          .get(url, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token
+            }
+          })
           .then((response) => {
+            console.log(response)
             for (let i = 0; i < response.data.beacon_info.length; i++) {
               // console.log(response.data.beacon_info[i].lat, response.data.beacon_info[i].lng)
               this.addMarker(
@@ -142,7 +148,7 @@ export default {
       const marker = new window.google.maps.Marker({
         position: { lat, lng },
         map: this.$store.state.map,
-        icon: icons
+        icon: icons,
       });
       this.$store.state.beaconMarkers.push(marker);
     },

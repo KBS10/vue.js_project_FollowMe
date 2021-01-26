@@ -16,6 +16,7 @@ export default new Vuex.Store({
     map: null,
     // Axios 통신을 통해 서버에 beacon 데이터 보내는 배열
     // beacons: [{ room: " " }]
+    token: "",
   },
   mutations: {},
   actions: {},
