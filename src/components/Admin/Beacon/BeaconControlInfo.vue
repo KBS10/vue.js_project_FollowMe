@@ -27,14 +27,16 @@
           <td>
             <button
               class="beaconcontrolbutton_delete"
-              @click="$delete(beaconinfos, i)">
-              <img src="../../../img/trash.png">
+              @click="$delete(beaconinfos, i)"
+            >
+              <img src="../../../img/trash.png" />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
     <v-btn class="button btn_primary" @click="addBeaconInput()">plus</v-btn>
+    <v-btn class="button btn_primary" @click="checkBeacon()">비콘 체크</v-btn>
     <v-btn @click="axiosFunction()">저장</v-btn>
   </div>
 </template>
@@ -45,14 +47,6 @@ export default {
   data() {
     return {
       beaconinfos: [
-        {
-          uuid: "",
-          major: "",
-          beacon_id_minor: "",
-          lat: "",
-          lng: "",
-          check: "create"
-        }
       ]
     };
   },
@@ -60,12 +54,17 @@ export default {
     addBeaconInput() {
       console.log("비콘 추가 버튼");
       console.log(this.beaconinfos);
+
       this.beaconinfos.push({
         uuid: "",
         major: "",
         beacon_id_minor: "",
-        lat: "",
-        lng: "",
+        lat: this.$store.state.markers[
+          this.$store.state.markers.length - 1
+        ].position.lat(),
+        lng: this.$store.state.markers[
+          this.$store.state.markers.length - 1
+        ].position.lng(),
         check: "create"
       });
     },

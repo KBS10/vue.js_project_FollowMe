@@ -14,7 +14,14 @@
     <div class="adminbeacon_content">
       <!-- 비콘을 설정할 수 있는 지도 표시 -->
       <div class="adminbeacon_GoogleMap">
-        <GoogleMap :handelOnClick="eventOn" />
+        <div v-switch="component">
+          <div v-case="'비콘 추가 및 삭제'">
+            <BeaconControlGoogleMap :handelOnClick="eventOn" />
+          </div>
+          <div v-case="'비콘 정보 및 신호 불량 비콘 확인'">
+            <BeaconInfoGoogleMap />
+          </div>
+        </div>
       </div>
       <div class="adminbeacon_beaconInfoWrap">
         <!-- 비콘에 대해 추가, 삭제, 이상 비콘 확인  -->
@@ -42,7 +49,8 @@
 </template>
 
 <script>
-import GoogleMap from "../GoogleMap/GoogleMap";
+import BeaconControlGoogleMap from "../GoogleMap/BeaconControlGoogleMap";
+import BeaconInfoGoogleMap from "../GoogleMap/BeaconInfoGoogleMap";
 import BeaconInfo from "./Beacon/BeaconInfo";
 import BeaconInfoButton from "./Beacon/BeaconInfoButton";
 import BeaconControlButton from "./Beacon/BeaconControlButton";
@@ -52,7 +60,8 @@ import axios from "axios";
 
 export default {
   components: {
-    GoogleMap,
+    BeaconControlGoogleMap,
+    BeaconInfoGoogleMap,
     BeaconInfo,
     BeaconInfoButton,
     BeaconControlButton,
@@ -70,8 +79,6 @@ export default {
         "비콘 추가 및 삭제",
         "비콘 정보 및 신호 불량 비콘 확인",
       ],
-      beaconImage:
-        "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
     };
   },
   created() {},
@@ -114,15 +121,15 @@ export default {
 
         const url = "http://172.26.3.122:8000/api/admin/beacon_setting_main";
         // const url = "http://192.168.0.24:8000/api/admin/beacon_setting_main";
-        console.log(this.$store.state.token);
+        console.log("token 값", this.$store.state.token);
         axios
           .get(url, {
             headers: {
-              Authorization: "Bearer " + this.$store.state.token
-            }
+              Authorization: "Bearer " + this.$store.state.token,
+            },
           })
           .then((response) => {
-            console.log(response)
+            console.log(response);
             for (let i = 0; i < response.data.beacon_info.length; i++) {
               // console.log(response.data.beacon_info[i].lat, response.data.beacon_info[i].lng)
               this.addMarker(
@@ -138,19 +145,6 @@ export default {
             console.log(error);
           });
       }
-    },
-    addMarker(lat, lng) {
-      const icons = {
-        url: this.beaconImage,
-        scaledSize: new window.google.maps.Size(20, 25),
-        anchor: new window.google.maps.Point(10, 10),
-      };
-      const marker = new window.google.maps.Marker({
-        position: { lat, lng },
-        map: this.$store.state.map,
-        icon: icons,
-      });
-      this.$store.state.beaconMarkers.push(marker);
     },
   },
 };

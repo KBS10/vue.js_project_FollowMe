@@ -1,5 +1,5 @@
 <template>
-  <div class="GoogleMap">
+  <div class="BeaconControlGoogleMap">
     <div id="map"></div>
   </div>
 </template>
@@ -37,8 +37,8 @@ export default {
   },
   methods: {
     initMap() {
-      this.$store.state.map = new window.google.maps.Map(
-        document.getElementById("map"),
+      this.map = new window.google.maps.Map(
+        document.getElementById("BeaconControlGoogleMap"),
         this.mapOptions
       );
       // console.log(this.$store.state.map)
@@ -46,7 +46,7 @@ export default {
       EventBus.$emit("Map", this.map);
 
       // 비콘의 위치(Marker) 추가
-      this.$store.state.map.addListener("click", event => {
+      this.map.addListener("click", event => {
         // 부모컴포넌트(Admin_Page1) 에서 받은
         // handelOnClick 이 true일 경우(비콘 추가 및 삭제) 마커 축가
         // handleOnClick 이 false일 경우(비콘 정보 및 신호 불량 비콘 확인)
@@ -106,7 +106,7 @@ export default {
         }
       }
       const overlay = new USGSOverlay(bounds, this.floorimage.floor3);
-      overlay.setMap(this.$store.state.map);
+      overlay.setMap(this.map);
     },
 
     addMarker(location) {
@@ -117,7 +117,7 @@ export default {
       };
       const marker = new window.google.maps.Marker({
         position: location,
-        map: this.$store.state.map,
+        map: this.map,
         icon: icons
       });
       this.$store.state.markers.push(marker);

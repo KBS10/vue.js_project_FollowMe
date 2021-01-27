@@ -6,10 +6,10 @@
     </div>
     <div class="beaconcontrolbutton_button">
       <v-btn
-        style="width: 125px"
+        style="width: 150px"
         class="beaconcontrolbutton btn_primary"
         @click="showMarkers()"
-        >모든 비콘 보이기</v-btn
+        >이전 자료 불러오기</v-btn
       >
       <v-btn
         style="width: 125px"

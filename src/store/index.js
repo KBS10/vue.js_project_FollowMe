@@ -13,7 +13,7 @@ export default new Vuex.Store({
     // Axios 통신을 통해 서버에서 beacon의 정보중 lat, lng를 저장하는 배열
     beaconMarkers: [],
     // Google Map 객체
-    map: null,
+    // map: null,
     // Axios 통신을 통해 서버에 beacon 데이터 보내는 배열
     // beacons: [{ room: " " }]
     token: "",
