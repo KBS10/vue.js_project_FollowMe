@@ -46,8 +46,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      beaconinfos: [
-      ]
+      beaconinfos: []
     };
   },
   methods: {

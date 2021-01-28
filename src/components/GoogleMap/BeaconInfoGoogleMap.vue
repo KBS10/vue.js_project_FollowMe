@@ -1,6 +1,6 @@
 <template>
   <div class="BeaconInfoGoogleMap">
-    <div id="map"></div>
+    <div id="BeaconInfoGoogleMap"></div>
   </div>
 </template>
 
@@ -10,6 +10,9 @@ export default {
   props: ["handelOnClick"],
   data: () => ({
     eventOn: false,
+    // Google Map 객체 저장
+    // map: null,
+    // location : {},
     // Google Map 옵션 저장
     mapOptions: {
       zoom: 19,
@@ -38,7 +41,6 @@ export default {
         document.getElementById("BeaconInfoGoogleMap"),
         this.mapOptions
       );
-      // console.log(this.$store.state.map)
       // 어떤 컴포넌트에서 this.map 객체를 받을 수 있게하는 Event
       EventBus.$emit("Map", this.map);
 
@@ -49,7 +51,6 @@ export default {
         // handleOnClick 이 false일 경우(비콘 정보 및 신호 불량 비콘 확인)
         if (this.handelOnClick == true) {
           this.addMarker(event.latLng);
-          // console.log(this.handelOnClick);
         }
       });
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
@@ -124,7 +125,7 @@ export default {
 </script>
 
 <style>
-#map {
+#BeaconInfoGoogleMap {
   height: 400px;
   width: 800px;
   background-color: gray;

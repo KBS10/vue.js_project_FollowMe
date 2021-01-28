@@ -106,6 +106,7 @@ export default {
       //   .catch(err => {
       //     alert(err);
       //   });
+      alert("회원가입이 완료되었습니다.");
       this.$router.replace("/login");
     },
     go_back() {

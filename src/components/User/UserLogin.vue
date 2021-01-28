@@ -55,11 +55,15 @@ export default {
         .then(response => {
           console.log(response);
           this.$store.state.token = response.data.token;
-          this.$router.replace("/admin");
+          if (response.data.role == 1) {
+            this.$router.replace("/admin");
+          } else if (response.data.role == 2) {
+            this.$router.replace("/medical");
+          }
         })
         .catch(err => {
           console.log(err);
-          alert(err);
+          alert("아이디와 비밀번호가 잘못되었습니다. ");
         });
     },
     join() {},
@@ -72,7 +76,7 @@ export default {
         })
         .then(response => {
           console.log(response);
-          alert(response);
+          alert("로그아웃이 완료되었습니다");
         })
         .catch(err => {
           console.log(err);
