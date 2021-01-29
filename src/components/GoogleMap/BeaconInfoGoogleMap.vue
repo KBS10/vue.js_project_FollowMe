@@ -45,14 +45,14 @@ export default {
       EventBus.$emit("Map", this.map);
 
       // 비콘의 위치(Marker) 추가
-      this.map.addListener("click", event => {
+      // this.map.addListener("click", event => {
         // 부모컴포넌트(Admin_Page1) 에서 받은
         // handelOnClick 이 true일 경우(비콘 추가 및 삭제) 마커 축가
         // handleOnClick 이 false일 경우(비콘 정보 및 신호 불량 비콘 확인)
-        if (this.handelOnClick == true) {
-          this.addMarker(event.latLng);
-        }
-      });
+      //   if (this.handelOnClick == true) {
+      //     this.addMarker(event.latLng);
+      //   }
+      // });
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
       const bounds = new window.google.maps.LatLngBounds(
         new window.google.maps.LatLng(35.89651393057683, 128.6201298818298),
@@ -107,19 +107,19 @@ export default {
       overlay.setMap(this.map);
     },
 
-    addMarker(location) {
-      const icons = {
-        url: this.beaconImage,
-        scaledSize: new window.google.maps.Size(20, 25),
-        anchor: new window.google.maps.Point(10, 10)
-      };
-      const marker = new window.google.maps.Marker({
-        position: location,
-        map: this.map,
-        icon: icons
-      });
-      this.$store.state.markers.push(marker);
-    }
+    // addMarker(location) {
+    //   const icons = {
+    //     url: this.beaconImage,
+    //     scaledSize: new window.google.maps.Size(20, 25),
+    //     anchor: new window.google.maps.Point(10, 10)
+    //   };
+    //   const marker = new window.google.maps.Marker({
+    //     position: location,
+    //     map: this.map,
+    //     icon: icons
+    //   });
+    //   this.$store.state.markers.push(marker);
+    // }
   }
 };
 </script>

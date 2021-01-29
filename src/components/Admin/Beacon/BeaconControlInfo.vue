@@ -14,9 +14,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(beacon, i) in this.beaconinfos" :key="i">
+        <tr v-for="(beacon, i) in this.$store.state.googleMapMarkers" :key="i">
           <td>{{ i + 1 }}</td>
-          <input type="text" id="room" v-model="beacon.room" hidden />
           <td>
             <input type="text" v-model="beacon.uuid" />
           </td>
@@ -27,7 +26,7 @@
           <td>
             <button
               class="beaconcontrolbutton_delete"
-              @click="$delete(beaconinfos, i)"
+              @click="$delete($store.state.googleMapMarkers, i)"
             >
               <img src="../../../img/trash.png" />
             </button>
@@ -44,39 +43,22 @@
 import axios from "axios";
 
 export default {
-  data() {
-    return {
-      beaconinfos: []
-    };
-  },
   methods: {
     addBeaconInput() {
       console.log("비콘 추가 버튼");
-      console.log(this.beaconinfos);
+      console.log(this.$store.state.googleMapMarkers);
 
-      this.beaconinfos.push({
-        uuid: "",
-        major: "",
-        beacon_id_minor: "",
-        lat: this.$store.state.markers[
-          this.$store.state.markers.length - 1
-        ].position.lat(),
-        lng: this.$store.state.markers[
-          this.$store.state.markers.length - 1
-        ].position.lng(),
-        check: "create"
-      });
     },
     axiosFunction() {
       console.log("axios 통신");
-      console.log(this.beaconinfos);
+      console.log(this.$store.state.googleMapMarkers);
       const url = "http://172.26.3.122:8000/api/admin/beacon_update";
       axios
-        .post(url, { beacon: this.beaconinfos })
-        .then(response => {
+        .post(url, { beacon: this.$store.state.googleMapMarkers })
+        .then((response) => {
           console.log(response);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },

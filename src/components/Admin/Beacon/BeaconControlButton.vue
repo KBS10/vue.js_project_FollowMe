@@ -8,7 +8,7 @@
       <v-btn
         style="width: 150px"
         class="beaconcontrolbutton btn_primary"
-        @click="showMarkers()"
+        @click="getBeforeBeaconInfo()"
         >이전 자료 불러오기</v-btn
       >
       <v-btn
@@ -23,7 +23,7 @@
 
 <script>
 import { EventBus } from "../../../utils/bus";
-// import axios from 'axios';
+import axios from "axios";
 export default {
   data: () => {
     return {
@@ -42,23 +42,45 @@ export default {
   methods: {
     // Sets the map on all markers in the array.
     setMaponAll(map) {
-      for (let i = 0; i < this.$store.state.markers.length; i++) {
-        this.$store.state.markers[i].setMap(map);
+      for (let i = 0; i < this.$store.state.googleMapMarkers.length; i++) {
+        this.$store.state.googleMapMarkers[i].setMap(map);
       }
     },
     // 마커 하면에서 만 안보이고 배열에는 정의되어있음
     clearMarker() {
       this.setMaponAll(null);
     },
-    // 모든 마커 보이기
-    showMarkers() {
-      this.setMaponAll(this.$store.state.map);
-      console.log("모든 비콘 보이기");
+    // 이전 자료 불러오기
+    getBeforeBeaconInfo() {
+      const url = "http://172.26.3.122:8000/api/admin/beacon_setting_main";
+
+      this.$store.state.this.$store.state.googleMapMarkers.$delete();
+      axios
+        .get(url, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+          },
+        })
+        .then((response) => {
+          console.log(response.data.beacon_info);
+          if (response.data.error == "Unauthorized") {
+            alert("이전 자료가 없습니다. 다시확인해주세요");
+          }
+
+          for (let i = 0; i < response.data.beacon_info.length; i++) {
+            this.$store.state.googleMapMarkers.push(response.data.beacon_info[i]);
+          }
+          console.log(this.$store.state.googleMapMarkers);
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log("이전 자료가 없습니다");
+        });
     },
     // 배열 안에 등록되어 있는 마커 모두 삭제
     deleteMarkers() {
       this.clearMarker();
-      this.$store.state.markers = [];
+      this.$store.state.googleMapMarkers = [];
       console.log("비콘 데이터 삭제");
     },
   },

@@ -6,6 +6,7 @@
 
 <script>
 import { EventBus } from "../../utils/bus";
+
 export default {
   props: ["handelOnClick"],
   data: () => ({
@@ -20,17 +21,17 @@ export default {
       disableDefaultUI: true,
       mapTypeControl: true,
       mapTypeControlOptions: {
-        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU
-      }
+        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+      },
     },
     floorimage: {
       floor2:
         "https://user-images.githubusercontent.com/53847348/99892072-3df2f480-2cb4-11eb-9d56-bae02c75b242.png",
       floor3:
-        "https://user-images.githubusercontent.com/53847348/99892066-12700a00-2cb4-11eb-898f-1679f957aecc.png"
+        "https://user-images.githubusercontent.com/53847348/99892066-12700a00-2cb4-11eb-898f-1679f957aecc.png",
     },
     beaconImage:
-      "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png"
+      "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
   }),
   mounted() {
     this.initMap();
@@ -42,18 +43,46 @@ export default {
         this.mapOptions
       );
 
+      const icons = {
+        url: this.beaconImage,
+        scaledSize: new window.google.maps.Size(20, 25),
+        anchor: new window.google.maps.Point(10, 10),
+      };
       // 어떤 컴포넌트에서 this.map 객체를 받을 수 있게하는 Event
       EventBus.$emit("Map", this.map);
 
+      this.$store.state.markers = [];
       // 비콘의 위치(Marker) 추가
-      this.map.addListener("click", event => {
+      this.map.addListener("click", (event) => {
+        console.log("안녕");
         // 부모컴포넌트(Admin_Page1) 에서 받은
         // handelOnClick 이 true일 경우(비콘 추가 및 삭제) 마커 축가
         // handleOnClick 이 false일 경우(비콘 정보 및 신호 불량 비콘 확인)
         if (this.handelOnClick == true) {
-          this.addMarker(event.latLng);
+          const marker = new window.google.maps.Marker({
+            position: event.latLng,
+            map: this.map,
+            icon: icons,
+          });
+
+          marker.addListener("mouseover", (event) => {
+            console.log(event);
+          });
+          marker.addListener("click", (event) => {
+            console.log(event);
+          });
+
+          this.$store.state.googleMapMarkers.push({
+            uuid: "",
+            major: "",
+            beacon_id_minor: "",
+            lat: marker.position.lat(),
+            lng: marker.position.lng(),
+            check: "create",
+          });
         }
       });
+
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
       const bounds = new window.google.maps.LatLngBounds(
         new window.google.maps.LatLng(35.89651393057683, 128.6201298818298),
@@ -107,21 +136,7 @@ export default {
       const overlay = new USGSOverlay(bounds, this.floorimage.floor3);
       overlay.setMap(this.map);
     },
-
-    addMarker(location) {
-      const icons = {
-        url: this.beaconImage,
-        scaledSize: new window.google.maps.Size(20, 25),
-        anchor: new window.google.maps.Point(10, 10)
-      };
-      const marker = new window.google.maps.Marker({
-        position: location,
-        map: this.map,
-        icon: icons
-      });
-      this.$store.state.markers.push(marker);
-    }
-  }
+  },
 };
 </script>
 
