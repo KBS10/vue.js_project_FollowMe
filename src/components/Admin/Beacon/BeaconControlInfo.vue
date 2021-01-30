@@ -24,30 +24,29 @@
           <td><input type="text" v-model="beacon.lat" /></td>
           <td><input type="text" v-model="beacon.lng" /></td>
           <td>
-            <button
-              class="beaconcontrolbutton_delete"
-              @click="$delete($store.state.googleMapMarkers, i)"
-            >
+            <button class="beaconcontrolbutton_delete" @click="deleteBeacon(i)">
               <img src="../../../img/trash.png" />
             </button>
           </td>
         </tr>
       </tbody>
     </table>
-    <v-btn class="button btn_primary" @click="addBeaconInput()">plus</v-btn>
-    <v-btn class="button btn_primary" @click="checkBeacon()">비콘 체크</v-btn>
-    <v-btn @click="axiosFunction()">저장</v-btn>
+    <v-btn @click="axiosFunction()">서버로 데이터 전송</v-btn>
   </div>
 </template>
 <script>
 import axios from "axios";
 
 export default {
+  data: () => {
+    return {
+      beaconControlMap: null,
+    };
+  },
+  mounted() {},
   methods: {
-    addBeaconInput() {
-      console.log("비콘 추가 버튼");
-      console.log(this.$store.state.googleMapMarkers);
-
+    deleteBeacon(index) {
+      this.$delete(this.$store.state.googleMapMarkers, index);
     },
     axiosFunction() {
       console.log("axios 통신");

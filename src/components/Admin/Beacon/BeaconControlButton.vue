@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../../utils/bus";
 import axios from "axios";
 export default {
   data: () => {
@@ -33,17 +32,11 @@ export default {
     };
   },
   created() {},
-  mounted() {
-    EventBus.$on("Map", function (value) {
-      this.beaconMap = value;
-      console.log("이벤트를 전달받음. 전달받은 값 : ", this.beaconMap);
-    });
-  },
   methods: {
     // Sets the map on all markers in the array.
     setMaponAll(map) {
       for (let i = 0; i < this.$store.state.googleMapMarkers.length; i++) {
-        this.$store.state.googleMapMarkers[i].setMap(map);
+        this.$store.state.beaconControlMarkers[i].setMap(map);
       }
     },
     // 마커 하면에서 만 안보이고 배열에는 정의되어있음
@@ -54,7 +47,6 @@ export default {
     getBeforeBeaconInfo() {
       const url = "http://172.26.3.122:8000/api/admin/beacon_setting_main";
 
-      this.$store.state.this.$store.state.googleMapMarkers.$delete();
       axios
         .get(url, {
           headers: {
@@ -63,14 +55,19 @@ export default {
         })
         .then((response) => {
           console.log(response.data.beacon_info);
-          if (response.data.error == "Unauthorized") {
-            alert("이전 자료가 없습니다. 다시확인해주세요");
-          }
+          // if (response.data.error == "Unauthorized") {
+          //   alert("이전 자료가 없습니다. 다시확인해주세요");
+          // }
 
           for (let i = 0; i < response.data.beacon_info.length; i++) {
-            this.$store.state.googleMapMarkers.push(response.data.beacon_info[i]);
+            this.$store.state.googleMapMarkers.push(
+              response.data.beacon_info[i]
+            );
+            this.addMarker(
+              response.data.beacon_info[i].lat,
+              response.data.beacon_info[i].lng
+            );
           }
-          console.log(this.$store.state.googleMapMarkers);
         })
         .catch(function (error) {
           console.log(error);
@@ -81,7 +78,21 @@ export default {
     deleteMarkers() {
       this.clearMarker();
       this.$store.state.googleMapMarkers = [];
+      this.$store.state.beaconControlMarkers = [];
       console.log("비콘 데이터 삭제");
+    },
+    addMarker(lat, lng) {
+      const icons = { 
+        url: this.beaconImage,
+        scaledSize: new window.google.maps.Size(20, 25),
+        anchor: new window.google.maps.Point(10, 10),
+      };
+      const marker = new window.google.maps.Marker({
+        position: {lat, lng},
+        map: this.$store.state.beaconControlMap,
+        icon: icons,
+      });
+      this.$store.state.beaconControlMarkers.push(marker);
     },
   },
 };

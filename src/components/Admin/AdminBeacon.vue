@@ -67,7 +67,6 @@ export default {
     BeaconControlButton,
     BeaconControlInfo,
   },
-  props: ["handelOnClick"],
   data() {
     return {
       eventOn: true,
@@ -107,6 +106,8 @@ export default {
   //     }
   //   });
   // },
+  mounted(){
+  },
   methods: {
     // 버튼에 따라 컴포넌트 변경하는 함수
     swapComponent(item) {
@@ -145,6 +146,19 @@ export default {
             console.log(error);
           });
       }
+    },
+    addMarker(lat, lng) {
+      const icons = {
+        url: this.beaconImage,
+        scaledSize: new window.google.maps.Size(20, 25),
+        anchor: new window.google.maps.Point(10, 10),
+      };
+      const marker = new window.google.maps.Marker({
+        position: {lat, lng},
+        map: this.$store.state.beaconControlMap,
+        icon: icons,
+      });
+      this.$store.state.beaconMarkers.push(marker);
     },
   },
 };

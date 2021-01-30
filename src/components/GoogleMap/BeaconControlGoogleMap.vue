@@ -5,14 +5,10 @@
 </template>
 
 <script>
-import { EventBus } from "../../utils/bus";
-
 export default {
   props: ["handelOnClick"],
   data: () => ({
     eventOn: false,
-    // Google Map 객체 저장
-    // map: null,
     // location : {},
     // Google Map 옵션 저장
     mapOptions: {
@@ -38,36 +34,35 @@ export default {
   },
   methods: {
     initMap() {
-      this.map = new window.google.maps.Map(
+      this.$store.state.beaconControlMap = new window.google.maps.Map(
         document.getElementById("BeaconControlGoogleMap"),
         this.mapOptions
       );
-
       const icons = {
         url: this.beaconImage,
         scaledSize: new window.google.maps.Size(20, 25),
         anchor: new window.google.maps.Point(10, 10),
       };
-      // 어떤 컴포넌트에서 this.map 객체를 받을 수 있게하는 Event
-      EventBus.$emit("Map", this.map);
-
+      // const infowindow = new window.google.maps.InfoWindow({
+      //   content: this.$store.state.googleMapMarkers
+      // })
       this.$store.state.markers = [];
       // 비콘의 위치(Marker) 추가
-      this.map.addListener("click", (event) => {
-        console.log("안녕");
+
+      this.$store.state.beaconControlMap.addListener("click", (event) => {
         // 부모컴포넌트(Admin_Page1) 에서 받은
         // handelOnClick 이 true일 경우(비콘 추가 및 삭제) 마커 축가
         // handleOnClick 이 false일 경우(비콘 정보 및 신호 불량 비콘 확인)
         if (this.handelOnClick == true) {
           const marker = new window.google.maps.Marker({
             position: event.latLng,
-            map: this.map,
+            map: this.$store.state.beaconControlMap,
             icon: icons,
           });
 
-          marker.addListener("mouseover", (event) => {
-            console.log(event);
-          });
+          // marker.addListener("mouseover", (event) => {
+
+          // });
           marker.addListener("click", (event) => {
             console.log(event);
           });
@@ -80,6 +75,8 @@ export default {
             lng: marker.position.lng(),
             check: "create",
           });
+          this.$store.state.beaconControlMarkers.push(marker);
+          console.log(this.$store.state.googleMapMarkers);
         }
       });
 
@@ -134,7 +131,7 @@ export default {
         }
       }
       const overlay = new USGSOverlay(bounds, this.floorimage.floor3);
-      overlay.setMap(this.map);
+      overlay.setMap(this.$store.state.beaconControlMap);
     },
   },
 };
