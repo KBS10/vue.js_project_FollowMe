@@ -8,12 +8,12 @@
         <td>Major</td>
         <td>Minor</td>
         <td>RSSI</td>
-        <td style="width : 170px">상태확인</td>
+        <td style="width: 170px">상태확인</td>
       </tr>
-      <tr v-for="info in $store.state.socketBeaconInfo" :key="info.Minor">
-        <td>{{ info.scannerID }}</td>
-        <td>{{ info.Major }}</td>
-        <td>{{ info.Minor }}</td>
+      <tr v-for="info in this.$store.state.AdminInfoBeacon" :key="info.Minor">
+        <td>{{ info.beacon_scanner_id }}</td>
+        <td>{{ info.major }}</td>
+        <td>{{ info.beacon_id_minor }}</td>
         <td>{{ info.RSSI }}</td>
         <td>{{ info.Error }}</td>
       </tr>
@@ -22,14 +22,11 @@
 </template>
 
 <script>
-// import axios from 'axios'
 export default {
   components: {},
   data() {
-    return {
-      search: ""
-    };
+    return {};
   },
-  created() {}
+  created() {},
 };
 </script>

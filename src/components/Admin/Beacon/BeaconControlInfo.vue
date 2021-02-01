@@ -14,7 +14,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(beacon, i) in this.$store.state.googleMapMarkers" :key="i">
+        <tr
+          v-for="(beacon, i) in this.$store.state.AdminControlBeacon"
+          :key="i"
+        >
           <td>{{ i + 1 }}</td>
           <td>
             <input type="text" v-model="beacon.uuid" />
@@ -39,22 +42,38 @@ import axios from "axios";
 
 export default {
   data: () => {
-    return {
-      beaconControlMap: null,
-    };
+    return {};
   },
   mounted() {},
   methods: {
+    // Sets the map on all markers in the array.
+    setMaponAll(map, index) {
+      this.$store.state.beaconControlMarkers[index].setMap(map);
+    },
+    // 마커 화면에서 만 안보이고 배열에는 정의되어있음
+    clearMarker(index) {
+      this.setMaponAll(null, index);
+    },
     deleteBeacon(index) {
-      this.$delete(this.$store.state.googleMapMarkers, index);
+      this.clearMarker(index);
+      this.$delete(this.$store.state.AdminControlBeacon, index);
+      this.$delete(this.$store.state.beaconControlMarkers, index);
     },
     axiosFunction() {
       console.log("axios 통신");
-      console.log(this.$store.state.googleMapMarkers);
       const url = "http://172.26.3.122:8000/api/admin/beacon_update";
       axios
-        .post(url, { beacon: this.$store.state.googleMapMarkers })
+        .post(
+          url,
+          { beacon: this.$store.state.AdminControlBeacon },
+          {
+            headers: {
+              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+            },
+          }
+        )
         .then((response) => {
+          alert("서버에 데이터를 보냈습니다");
           console.log(response);
         })
         .catch((error) => {

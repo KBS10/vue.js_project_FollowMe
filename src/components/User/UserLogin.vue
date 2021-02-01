@@ -42,7 +42,7 @@ export default {
     return {
       email: null,
       password: null,
-      token: null
+      token: null,
     };
   },
   methods: {
@@ -50,18 +50,21 @@ export default {
       axios
         .post("http://172.26.3.122:8000/api/auth/login", {
           email: this.email,
-          password: this.password
+          password: this.password,
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
-          this.$store.state.token = response.data.token;
           if (response.data.role == 1) {
             this.$router.replace("/admin");
           } else if (response.data.role == 2) {
             this.$router.replace("/medical");
           }
+          this.$cookie.set("accesstoken", response.data.token, 1);
+
+          axios.defaults.headers.common["x-access-token"] = response.data.token;
+          alert("Welcome");
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           alert("아이디와 비밀번호가 잘못되었습니다. ");
         });
@@ -71,18 +74,20 @@ export default {
       axios
         .post("http://172.26.3.122:8000/api/auth/logout", [], {
           headers: {
-            Authorization: "Bearer " + this.$store.state.token
-          }
+            Authorization: "Bearer " + this.$store.state.token,
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
+          this.$cookie.delete("accesstoken");
+          this.isCookie = document.cookie;
           alert("로그아웃이 완료되었습니다");
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           alert(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>

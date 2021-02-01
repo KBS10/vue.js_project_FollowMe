@@ -35,7 +35,8 @@ export default {
   methods: {
     // Sets the map on all markers in the array.
     setMaponAll(map) {
-      for (let i = 0; i < this.$store.state.googleMapMarkers.length; i++) {
+
+      for (let i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
         this.$store.state.beaconControlMarkers[i].setMap(map);
       }
     },
@@ -50,22 +51,23 @@ export default {
       axios
         .get(url, {
           headers: {
-            Authorization: "Bearer " + this.$store.state.token,
+            Authorization: "Bearer " + this.$cookie.get("accesstoken"),
           },
         })
         .then((response) => {
           console.log(response.data.beacon_info);
-          // if (response.data.error == "Unauthorized") {
-          //   alert("이전 자료가 없습니다. 다시확인해주세요");
-          // }
+          if (response.data.error == "Unauthorized") {
+            alert("이전 자료가 없습니다. 다시확인해주세요");
+          }
 
           for (let i = 0; i < response.data.beacon_info.length; i++) {
-            this.$store.state.googleMapMarkers.push(
+            this.$store.state.AdminControlBeacon.push(
               response.data.beacon_info[i]
             );
             this.addMarker(
               response.data.beacon_info[i].lat,
-              response.data.beacon_info[i].lng
+              response.data.beacon_info[i].lng,
+              response.data.beacon_info[i].major,
             );
           }
         })
@@ -77,20 +79,21 @@ export default {
     // 배열 안에 등록되어 있는 마커 모두 삭제
     deleteMarkers() {
       this.clearMarker();
-      this.$store.state.googleMapMarkers = [];
+      this.$store.state.AdminControlBeacon = [];
       this.$store.state.beaconControlMarkers = [];
       console.log("비콘 데이터 삭제");
     },
-    addMarker(lat, lng) {
-      const icons = { 
+    addMarker(lat, lng, major) {
+      const icons = {
         url: this.beaconImage,
         scaledSize: new window.google.maps.Size(20, 25),
         anchor: new window.google.maps.Point(10, 10),
       };
       const marker = new window.google.maps.Marker({
-        position: {lat, lng},
+        position: { lat, lng },
         map: this.$store.state.beaconControlMap,
         icon: icons,
+        floor: major,
       });
       this.$store.state.beaconControlMarkers.push(marker);
     },

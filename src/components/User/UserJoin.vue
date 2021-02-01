@@ -75,7 +75,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 export default {
   name: "UserLogin",
   data() {
@@ -90,22 +90,22 @@ export default {
   },
   methods: {
     signup() {
-      // axios
-      //   .post("http://172.26.3.122:8000/api/auth/register", {
-      //     email: this.email,
-      //     password: this.password,
-      //     password_confirmation: this.password_confirmation,
-      //     name: this.name,
-      //     unique_number: this.unique_number,
-      //     phone_number: this.phone_number
-      //   })
-      //   .then(response => {
-      //     console.log(response);
-      // this.$router.replace("/login");
-      //   })
-      //   .catch(err => {
-      //     alert(err);
-      //   });
+      axios
+        .post("http://172.26.3.122:8000/api/auth/register", {
+          email: this.email,
+          password: this.password,
+          password_confirmation: this.password_confirmation,
+          name: this.name,
+          unique_number: this.unique_number,
+          phone_number: this.phone_number
+        })
+        .then(response => {
+          console.log(response);
+      this.$router.replace("/login");
+        })
+        .catch(err => {
+          alert(err);
+        });
       alert("회원가입이 완료되었습니다.");
       this.$router.replace("/login");
     },
