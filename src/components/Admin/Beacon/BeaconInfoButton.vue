@@ -82,7 +82,7 @@ export default {
   methods: {
     getInfoBeacon() {
       this.$store.state.AdminInfoBeacon = [];
-      const url = "http://172.26.3.122:8000/api/admin/beacon_defect_check_main";
+      const url = this.$store.state.url + "/api/admin/beacon_defect_check_main";
       axios
         .get(url, {
           headers: {

@@ -35,7 +35,6 @@ export default {
   methods: {
     // Sets the map on all markers in the array.
     setMaponAll(map) {
-
       for (let i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
         this.$store.state.beaconControlMarkers[i].setMap(map);
       }
@@ -46,7 +45,7 @@ export default {
     },
     // 이전 자료 불러오기
     getBeforeBeaconInfo() {
-      const url = "http://172.26.3.122:8000/api/admin/beacon_setting_main";
+      const url = this.$store.state.url + "/api/admin/beacon_setting_main";
 
       axios
         .get(url, {
@@ -67,7 +66,7 @@ export default {
             this.addMarker(
               response.data.beacon_info[i].lat,
               response.data.beacon_info[i].lng,
-              response.data.beacon_info[i].major,
+              response.data.beacon_info[i].major
             );
           }
         })

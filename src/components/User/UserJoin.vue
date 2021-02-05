@@ -85,25 +85,26 @@ export default {
       password_confirmation: null,
       name: null,
       unique_number: null,
-      phone_number: null
+      phone_number: null,
     };
   },
   methods: {
     signup() {
+      const url = this.$store.state.url + "/api/auth/register";
       axios
-        .post("http://172.26.3.122:8000/api/auth/register", {
+        .post(url, {
           email: this.email,
           password: this.password,
           password_confirmation: this.password_confirmation,
           name: this.name,
           unique_number: this.unique_number,
-          phone_number: this.phone_number
+          phone_number: this.phone_number,
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
-      this.$router.replace("/login");
+          this.$router.replace("/login");
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err);
         });
       alert("회원가입이 완료되었습니다.");
@@ -111,7 +112,7 @@ export default {
     },
     go_back() {
       this.$router.replace("/login");
-    }
-  }
+    },
+  },
 };
 </script>

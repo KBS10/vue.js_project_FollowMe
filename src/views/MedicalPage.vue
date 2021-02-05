@@ -39,7 +39,6 @@ import MedicalReceipt from "../components/Medical/MedicaIReceipt";
 import MedicalHistory from "../components/Medical/MedicalHistory";
 import MedicalPopup from "../components/Medical/MedicalPopup";
 import axios from "axios";
-import { EventBus } from "../utils/bus";
 import MedicalSameNameVue from "../components/Medical/MedicalSameName.vue";
 export default {
   name: "MedicalPage",
@@ -53,7 +52,7 @@ export default {
   }),
   methods: {
     patientSearch() {
-      const url = "http://172.26.3.122:8000/api/medical/patient_search";
+      const url = this.$store.state.url + "/api/medical/patient_search";
       axios
         .post(
           url,
@@ -65,11 +64,11 @@ export default {
           }
         )
         .then((response) => {
+          this.$store.state.patient_list = [];
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
-          console.log(response.data.patient_list)
-          EventBus.$on("patient_name", response.data.patient_list);
+          this.$store.state.patient_list = response.data.patient_list;
           this.$modal.show(
             MedicalSameNameVue,
             {

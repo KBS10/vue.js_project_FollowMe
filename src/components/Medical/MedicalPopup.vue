@@ -118,7 +118,7 @@ export default {
   }),
   methods: {
     register() {
-      const url = "http://172.26.3.122:8000/api/medical/patient_create";
+      const url = this.$store.state.url + "/api/medical/patient_create";
       const patient_Info = {
         patient_id: this.patient_id,
         patient_name: this.patient_name,
@@ -137,7 +137,6 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }

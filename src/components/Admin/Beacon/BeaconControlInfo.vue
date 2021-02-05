@@ -63,7 +63,7 @@ export default {
     },
     axiosFunction() {
       console.log("axios 통신");
-      const url = "http://172.26.3.122:8000/api/admin/beacon_update";
+      const url = this.$store.state.url + "/api/admin/beacon_update";
       axios
         .post(
           url,

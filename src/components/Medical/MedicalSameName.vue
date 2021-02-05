@@ -9,31 +9,46 @@
         <td style="width: 100px">전화번호</td>
         <td style="width: 50px">클릭</td>
       </tr>
-      <tr v-for="info in this.patient_Info" :key="info.patient_id">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><v-btn @click="getPatientInfo()">클릭</v-btn></td>
+      <tr v-for="info in this.$store.state.patient_list" :key="info.patient_id">
+        <td>{{ info.patient_id }}</td>
+        <td>{{ info.patient_name }}</td>
+        <td>{{ info.phone_number }}</td>
+        <td>{{ info.resident_number }}</td>
+        <td><v-btn @click="getPatientInfo(info.patient_id)">클릭</v-btn></td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
-import { EventBus } from "../../utils/bus";
+import axios from "axios";
 export default {
-  data: () => ({
-    patient_Info: [],
-  }),
-  mounted() {
-    EventBus.$on("patient_name", function (value) {
-      console.log("data! ", value);
-    });
-  },
+  data: () => ({}),
+  created() {},
   methods: {
-    getPatientInfo() {
-      console.log("hi");
+    getPatientInfo(value) {
+      const url = this.$store.state.url + "/api/medical/patient_select";
+      axios
+        .post(
+          url,
+          { patient_id: value },
+          {
+            headers: {
+              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.error == "Unauthorized") {
+            alert("사용자의 권한이 없습니다");
+          }
+          this.$store.state.patient_Info = response.data;
+          console.log(this.$store.state.patient_Info)
+          this.$emit("close");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
   },
 };

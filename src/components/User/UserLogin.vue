@@ -48,12 +48,11 @@ export default {
   methods: {
     login() {
       axios
-        .post("http://172.26.3.122:8000/api/auth/login", {
+        .post( this.$store.state.url + "/api/auth/login", {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
-          console.log(response);
           if (response.data.role == 1) {
             this.$router.replace("/admin");
           } else if (response.data.role == 2) {
@@ -72,7 +71,7 @@ export default {
     join() {},
     logout() {
       axios
-        .post("http://172.26.3.122:8000/api/auth/logout", [], {
+        .post( this.$store.state.url + "/api/auth/logout", [], {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
           },
