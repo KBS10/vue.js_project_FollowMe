@@ -14,8 +14,11 @@
 
     <div class="user_container_header">
       <p class="medical_patient_search">환자 검색</p>
-      <input class="medical_patient_input" />
-      <v-btn class="medical_search"> 검색 </v-btn>
+      <input class="medical_patient_input" v-model="patient_name" />
+      <v-btn class="medical_search" @click="patientSearch()"> 검색 </v-btn>
+      <v-btn class="medical_register" @click="moveRegisterPopup()"
+        >환자 등록
+      </v-btn>
     </div>
     <div class="medical_content">
       <div class="medical_Info">
@@ -34,14 +37,70 @@
 import MedicalInfo from "../components/Medical/MedicalInfo";
 import MedicalReceipt from "../components/Medical/MedicaIReceipt";
 import MedicalHistory from "../components/Medical/MedicalHistory";
-
+import MedicalPopup from "../components/Medical/MedicalPopup";
+import axios from "axios";
+import { EventBus } from "../utils/bus";
+import MedicalSameNameVue from "../components/Medical/MedicalSameName.vue";
 export default {
   name: "MedicalPage",
   components: {
     MedicalInfo,
     MedicalReceipt,
-    MedicalHistory
-  }
+    MedicalHistory,
+  },
+  data: () => ({
+    patient_name: "",
+  }),
+  methods: {
+    patientSearch() {
+      const url = "http://172.26.3.122:8000/api/medical/patient_search";
+      axios
+        .post(
+          url,
+          { patient_name: this.patient_name },
+          {
+            headers: {
+              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+            },
+          }
+        )
+        .then((response) => {
+          if (response.data.error == "Unauthorized") {
+            alert("사용자의 권한이 없습니다");
+          }
+          console.log(response.data.patient_list)
+          EventBus.$on("patient_name", response.data.patient_list);
+          this.$modal.show(
+            MedicalSameNameVue,
+            {
+              modal: this.$modal,
+            },
+            {
+              width: "500px",
+              height: "600px",
+              draggable: true,
+            }
+          );
+        })
+        .catch(function (error) {
+          console.log(error);
+          alert("등록된 환자가 없습니다");
+        });
+    },
+    moveRegisterPopup() {
+      this.$modal.show(
+        MedicalPopup,
+        {
+          modal: this.$modal,
+        },
+        {
+          width: "500px",
+          height: "600px",
+          draggable: true,
+        }
+      );
+    },
+  },
 };
 </script>
 <style>

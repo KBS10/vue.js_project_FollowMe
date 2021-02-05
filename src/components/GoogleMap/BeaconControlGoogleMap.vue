@@ -16,7 +16,7 @@ export default {
     eventOn: false,
     // location : {},
     // Google Map 옵션 저장
-    majorBeacon: 20001,
+    majorBeacon: 1,
     mapOptions: {
       zoom: 19,
       center: { lat: 35.896783, lng: 128.620941 },
@@ -109,12 +109,12 @@ export default {
       var overlay = null;
       if (this.$store.state.floorBuilding == 1) {
         overlay = new USGSOverlay(bounds, this.floorimage.floor2);
-        this.majorBeacon = 20001;
+        this.majorBeacon = 1;
         this.clearMarker(this.majorBeacon);
         EventBus.$emit("beaconfloor", this.majorBeacon);
       } else if (this.$store.state.floorBuilding == 2) {
         overlay = new USGSOverlay(bounds, this.floorimage.floor3);
-        this.majorBeacon = 30001;
+        this.majorBeacon = 2;
         this.clearMarker(this.majorBeacon);
         EventBus.$emit("beaconfloor", this.majorBeacon);
       }

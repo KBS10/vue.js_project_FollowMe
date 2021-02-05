@@ -108,7 +108,6 @@ export default {
         }
       }
       var overlay = null;
-      
       if (this.$store.state.floorBuilding == 1) {
         overlay = new USGSOverlay(bounds, this.floorimage.floor2);
         this.majorBeacon = 1;

@@ -181,3 +181,36 @@ h2 {
     width: 100px;
     border: 1px solid;
 }
+
+/* ////////////////////// */
+/* Medical Popup Page CSS */
+/* ////////////////////// */
+.medicalPopup {
+    width: 100%;
+    text-align: center;
+}
+.medicalPopup h1{
+    text-align: center;
+}
+.medicalPopup .medicalInfo_top_table{
+    border: solid 1px;
+    margin: 15px auto;
+}
+.medicalPopup .medicalInfo_top_table input{
+    text-align: center;
+}
+.medicalPopup .btn-primary.btn{
+    margin-top: 10px;
+}
+
+/* ////////////////////// */
+/* Medical SameName Page CSS */
+/* ////////////////////// */
+
+.MedicalSameName h1 {
+    text-align: center;
+}
+
+.MedicalSameName .medicalSameName.Table{
+    border: solid 1px;
+}

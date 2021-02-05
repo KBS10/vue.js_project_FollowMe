@@ -12,8 +12,11 @@
       <!-- <v-btn style="width: 125px" class="beaconInfobutton btn_primary"
         >비콘 정보</v-btn
       > -->
-      <v-btn style="width: 125px" class="beaconInfobutton btn_primary"
-        @click="showCircle()">비콘 반경</v-btn
+      <v-btn
+        style="width: 125px"
+        class="beaconInfobutton btn_primary"
+        @click="showCircle()"
+        >비콘 반경</v-btn
       >
     </div>
   </div>
@@ -29,11 +32,24 @@ export default {
       socket: io("http://172.26.1.3:3000/"),
       beaconImage:
         "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
+      beaconErrorImage:
+        "https://user-images.githubusercontent.com/53847348/106530728-38c1e980-6530-11eb-9fed-89732ab47bf1.png",
     };
   },
 
   mounted() {
     this.getInfoBeacon();
+    this.initMap();
+    const icons1 = {
+      url: this.beaconImage,
+      scaledSize: new window.google.maps.Size(20, 25),
+      anchor: new window.google.maps.Point(10, 10),
+    }
+    const icons2 = {
+      url: this.beaconErrorImage,
+      scaledSize: new window.google.maps.Size(20, 25),
+      anchor: new window.google.maps.Point(10, 10),
+    };
     // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
     this.socket.on("beaconInfo", (data) => {
       for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
@@ -42,6 +58,10 @@ export default {
         ) {
           this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
           this.$store.state.AdminInfoBeacon[i].Error = data.Error;
+
+          if (this.$store.state.AdminBeacon[i].Error == "양호") {
+            this.$store.state.beaconInfoMarkers[i].icon = icons1;
+          }
         }
       }
     });
@@ -52,14 +72,14 @@ export default {
         ) {
           this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
           this.$store.state.AdminInfoBeacon[i].Error = data.Error;
+          if (this.$store.state.AdminBeacon[i].Error == "이상") {
+            this.$store.state.beaconInfoMarkers[i].icon = icons2;
+          }
         }
       }
     });
   },
   methods: {
-    showCircle(){
-
-    },
     getInfoBeacon() {
       this.$store.state.AdminInfoBeacon = [];
       const url = "http://172.26.3.122:8000/api/admin/beacon_defect_check_main";
@@ -78,7 +98,8 @@ export default {
             this.addMarker(
               response.data.beacon_info[i].lat,
               response.data.beacon_info[i].lng,
-              response.data.beacon_info[i].major
+              response.data.beacon_info[i].major,
+              i
             );
           }
           console.log(this.$store.state.AdminInfoBeacon);
@@ -89,7 +110,7 @@ export default {
     },
     addMarker(lat, lng, major) {
       const icons = {
-        url: this.beaconImage,
+        url: this.beaconErrorImage,
         scaledSize: new window.google.maps.Size(20, 25),
         anchor: new window.google.maps.Point(10, 10),
       };
@@ -97,11 +118,10 @@ export default {
         position: { lat, lng },
         map: this.$store.state.beaconInfoMap,
         floor: major,
-        strokeColor: "#FF0000",
         strokeOpacity: 0.8,
         strokeWeight: 2,
-        fillColor: "#FF0000",
         fillOpacity: 0.35,
+        visible: true,
       });
       const marker = new window.google.maps.Marker({
         position: { lat, lng },
@@ -110,8 +130,14 @@ export default {
         floor: major,
         circle: circle,
       });
-      this.$store.state.beaconInfoMarkers.push(circle);
       this.$store.state.beaconInfoMarkers.push(marker);
+    },
+    initMap() {
+      const infoWindow = new window.google.maps.InfoWindow();
+      infoWindow.open(this.$store.state.beaconInfoMap);
+      // this.$store.state.beaconInfoMarkers.addListener("click", (event) => {
+
+      // });
     },
   },
 };

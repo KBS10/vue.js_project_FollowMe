@@ -117,5 +117,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data: () => ({
+    patient_id: 0,
+    patient_name: "",
+    resident_number: "",
+    phone_number: "",
+  }),
+  mounted: () => {},
+  methods: {},
+};
 </script>

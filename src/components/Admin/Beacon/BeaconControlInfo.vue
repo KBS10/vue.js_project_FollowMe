@@ -22,10 +22,12 @@
           <td>
             <input type="text" v-model="beacon.uuid" />
           </td>
-          <td><input type="text" v-model="beacon.major" /></td>
-          <td><input type="text" v-model="beacon.beacon_id_minor" /></td>
-          <td><input type="text" v-model="beacon.lat" /></td>
-          <td><input type="text" v-model="beacon.lng" /></td>
+          <td><input type="text" v-model="beacon.major" required /></td>
+          <td>
+            <input type="text" v-model="beacon.beacon_id_minor" required />
+          </td>
+          <td><input type="text" v-model="beacon.lat" required /></td>
+          <td><input type="text" v-model="beacon.lng" required /></td>
           <td>
             <button class="beaconcontrolbutton_delete" @click="deleteBeacon(i)">
               <img src="../../../img/trash.png" />
