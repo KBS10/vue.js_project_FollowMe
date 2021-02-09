@@ -91,13 +91,9 @@ h2 {
 .medicalInfo_top_table .medicalInfo_address,
 .medicalInfo_top_table .medicalInfo_detailAddress,
 .medicalInfo_top_table .medical_telNumber,
-.medicalInfo_top_table .medical_note {
-    border: 1px solid;
-}
-
+.medicalInfo_top_table .medical_note,
 .medicalInfo_frontSecurityNumber,
-.medicalInfo_backSecurityNumber {
-    display: inline-block;
+.medicalInfo_backSecurityNumber{
     border: 1px solid;
 }
 
@@ -138,7 +134,6 @@ h2 {
     border: 1px solid;
   }
 .button_array {
-    float: right;
     text-align: center;
     padding: 10px;
   }

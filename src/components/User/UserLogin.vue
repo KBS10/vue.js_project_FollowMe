@@ -48,19 +48,18 @@ export default {
   methods: {
     login() {
       axios
-        .post( this.$store.state.url + "/api/auth/login", {
+        .post(this.$store.state.url + "/api/auth/login", {
           email: this.email,
           password: this.password,
         })
         .then((response) => {
+          this.$cookie.set("accesstoken", response.data.token, 1);
+          axios.defaults.headers.common["x-access-token"] = response.data.token;
           if (response.data.role == 1) {
             this.$router.replace("/admin");
           } else if (response.data.role == 2) {
             this.$router.replace("/medical");
           }
-          this.$cookie.set("accesstoken", response.data.token, 1);
-
-          axios.defaults.headers.common["x-access-token"] = response.data.token;
           alert("Welcome");
         })
         .catch((err) => {
@@ -71,7 +70,7 @@ export default {
     join() {},
     logout() {
       axios
-        .post( this.$store.state.url + "/api/auth/logout", [], {
+        .post(this.$store.state.url + "/api/auth/logout", [], {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
           },

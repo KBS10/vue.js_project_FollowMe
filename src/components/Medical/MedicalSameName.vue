@@ -42,8 +42,21 @@ export default {
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
-          this.$store.state.patient_Info = response.data;
-          console.log(this.$store.state.patient_Info)
+          this.$store.state.patient_Info.patient.patient_id =
+            response.data.patient.patient_id;
+          this.$store.state.patient_Info.patient.patient_name =
+            response.data.patient.patient_name;
+          this.$store.state.patient_Info.patient.resident_number =
+            response.data.patient.resident_number;
+          this.$store.state.patient_Info.patient.postal_code =
+            response.data.patient.postal_code;
+          this.$store.state.patient_Info.patient.address =
+            response.data.patient.address;
+          this.$store.state.patient_Info.patient.detail_address =
+            response.data.patient.detail_address;
+          this.$store.state.patient_Info.patient.phone_number =
+            response.data.patient.phone_number;
+          this.$store.state.patient_Info.patient.notes = response.data.patient.notes;
           this.$emit("close");
         })
         .catch(function (error) {

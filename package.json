@@ -16,6 +16,7 @@
     "vue": "^2.6.11",
     "vue-cookie": "^1.1.4",
     "vue-js-modal": "^2.0.0-rc.6",
+    "vue-moment": "^4.1.0",
     "vue-router": "^3.2.0",
     "vuejs-daum-postcode": "^1.0.4",
     "vuetify": "^2.4.3",

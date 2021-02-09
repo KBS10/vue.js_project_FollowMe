@@ -6,19 +6,17 @@
       <tr>
         <td>환자 번호</td>
         <td>
-          <div
-            class="medicalInfo_number"
-            style="width: 150px; height: 25px"
-          ></div>
+          <div class="medicalInfo_number" style="width: 150px; height: 25px">
+            {{ $store.state.patient_Info.patient.patient_id }}
+          </div>
         </td>
       </tr>
       <tr>
         <td>환자 성명</td>
         <td>
-          <div
-            class="medicalInfo_name"
-            style="width: 150px; height: 25px"
-          ></div>
+          <div class="medicalInfo_name" style="width: 150px; height: 25px">
+            {{ $store.state.patient_Info.patient.patient_name }}
+          </div>
         </td>
       </tr>
       <tr>
@@ -26,13 +24,10 @@
         <td>
           <div
             class="medicalInfo_frontSecurityNumber"
-            style="width: 100px; height: 25px"
-          ></div>
-          -
-          <div
-            class="medicalInfo_backSecurityNumber"
-            style="width: 100px; height: 25px"
-          ></div>
+            style="width: 150px; height: 25px"
+          >
+            {{ $store.state.patient_Info.patient.resident_number }}
+          </div>
         </td>
       </tr>
       <tr>
@@ -41,16 +36,17 @@
           <div
             class="medicalInfo_postNumber"
             style="width: 200px; height: 25px"
-          ></div>
+          >
+            {{ $store.state.patient_Info.patient.postal_code }}
+          </div>
         </td>
       </tr>
       <tr>
         <td>주 소</td>
         <td>
-          <div
-            class="medicalInfo_address"
-            style="width: 300px; height: 25px"
-          ></div>
+          <div class="medicalInfo_address" style="width: 300px; height: 25px">
+            {{ $store.state.patient_Info.patient.address }}
+          </div>
         </td>
       </tr>
       <tr>
@@ -59,57 +55,25 @@
           <div
             class="medicalInfo_detailAddress"
             style="width: 300px; height: 25px"
-          ></div>
+          >
+            {{ $store.state.patient_Info.patient.detail_address }}
+          </div>
         </td>
       </tr>
       <tr>
         <td>전화 번호</td>
         <td>
-          <div
-            class="medical_telNumber"
-            style="width: 300px; height: 25px"
-          ></div>
+          <div class="medical_telNumber" style="width: 300px; height: 25px">
+            {{ $store.state.patient_Info.patient.phone_number }}
+          </div>
         </td>
       </tr>
       <tr>
         <td>참고 사항</td>
         <td>
-          <div class="medical_note" style="width: 300px; height: 100px"></div>
-        </td>
-      </tr>
-    </table>
-
-    <table class="medicalInfo_bottom_table">
-      <tr>
-        <td>최종 진료일</td>
-        <td>
-          <div
-            class="medicalInfo_finalClinicDate"
-            style="width: 100px; height: 25px"
-          ></div>
-        </td>
-        <td>최종 진료실</td>
-        <td>
-          <div
-            class="medicalInfo_finalClinicRoom"
-            style="width: 100px; height: 25px"
-          ></div>
-        </td>
-      </tr>
-      <tr>
-        <td>최종 진료과</td>
-        <td>
-          <div
-            class="medicalInfo_finalDepartment"
-            style="width: 100px; height: 25px"
-          ></div>
-        </td>
-        <td>총 미수금</td>
-        <td>
-          <div
-            class="medicalInfo_totalReceive"
-            style="width: 100px; height: 25px"
-          ></div>
+          <div class="medical_note" style="width: 300px; height: 100px">
+            {{ $store.state.patient_Info.patient.notes }}
+          </div>
         </td>
       </tr>
     </table>
@@ -118,13 +82,8 @@
 
 <script>
 export default {
-  data: () => ({
-    patient_id: 0,
-    patient_name: "",
-    resident_number: "",
-    phone_number: "",
-  }),
-  mounted: () => {},
-  methods: {},
+  data: () => ({}),
+  mounted() {},
+  methods: {}
 };
 </script>
