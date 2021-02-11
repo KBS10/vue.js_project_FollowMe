@@ -1,14 +1,17 @@
 <template>
-  <div class="FlowList">
-    <v-btn
-      text
-      class="d-block"
-      align="center"
-      v-for="room in rooms"
-      :key="room.id"
+  <div class="listflow">
+    <h1>환자 동선 설정</h1>
+    <grid
+      :draggable="true"
+      :sortable="true"
+      :items="rooms"
+      :height="100"
+      :width="100"
     >
-      {{ room.room_name }}
-    </v-btn>
+      <template slot="cell" scope="rooms">
+        <v-btn>{{ rooms.item.room_name }}</v-btn>
+      </template>
+    </grid>
     <v-btn @click="flow_submit"> submit </v-btn>
   </div>
 </template>
@@ -19,11 +22,40 @@ import axios from "axios";
 export default {
   name: "FlowList",
   components: {},
+  props: {
+    gridWidth: {
+      type: Number,
+      default: -1,
+    },
+    cellWidth: {
+      type: Number,
+      default: 80,
+    },
+    cellHeight: {
+      type: Number,
+      default: 80,
+    },
+    draggable: {
+      type: Boolean,
+      default: false,
+    },
+    dragDelay: {
+      type: Number,
+      default: 0,
+    },
+    sortable: {
+      type: Boolean,
+      default: false,
+    },
+    center: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
-      rooms: [],
+      rooms : [],
       flow_sequence: 1,
-      url: "http://172.26.3.122:8000/api",
     };
   },
   created() {
@@ -35,10 +67,14 @@ export default {
   },
   methods: {
     flow_submit() {
+      console.log(this.rooms)
       axios
         .post(
-          `${this.url}/medical/flow_setting`,
-          { flow: this.rooms, patient_id: 13 },
+          this.$store.state.url + "/api/medical/flow_setting",
+          {
+            flow: this.rooms,
+            patient_id: this.$store.state.patient_Info.patient.patient_id,
+          },
           {
             headers: {
               Authorization: "Bearer " + this.$cookie.get("accesstoken"),
@@ -46,7 +82,8 @@ export default {
           }
         )
         .then((response) => {
-          alert("서버에 데이터를 보냈습니다");
+          this.$store.state.checkMedicalRoute = false;
+          this.rooms = [];
           console.log(response);
         })
         .catch((error) => {

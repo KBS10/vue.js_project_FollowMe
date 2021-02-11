@@ -36,7 +36,6 @@ h2 {
 /* 컨텐츠 내용 */
 .medical_content {
     display: block;
-    background-color: blueviolet;
 }
 
 .user_container_header .medical_patient_search {

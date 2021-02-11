@@ -70,6 +70,7 @@ export default {
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
+          alert("접수가 완료되었습니다.");
           console.log(response);
         })
         .catch(function(error) {

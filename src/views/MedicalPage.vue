@@ -27,8 +27,17 @@
       <div class="medical_Receipt">
         <MedicalReceipt />
       </div>
-      <div class="medical_History">
-        <MedicalHistory />
+      <div v-switch="$store.state.checkMedicalRoute">
+        <div v-case="false">
+          <div class="medical_History">
+            <MedicalHistory />
+          </div>
+        </div>
+        <div v-case="true">
+          <div>
+            <FlowList />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -40,12 +49,15 @@ import MedicalHistory from "../components/Medical/MedicalHistory";
 import MedicalPopup from "../components/Medical/MedicalPopup";
 import axios from "axios";
 import MedicalSameNameVue from "../components/Medical/MedicalSameName.vue";
+import FlowList from "./FlowListPage.vue";
+
 export default {
   name: "MedicalPage",
   components: {
     MedicalInfo,
     MedicalReceipt,
     MedicalHistory,
+    FlowList,
   },
   data: () => ({
     patient_name: "",

@@ -7,7 +7,8 @@ import vuetify from "./plugins/vuetify";
 import VSwitch from "v-switch-case";
 import VModal from "vue-js-modal";
 import VueMoment from "vue-moment";
-
+import Grid from "vue-js-grid";
+Vue.use(Grid);
 Vue.use(VueMoment);
 Vue.use(VSwitch);
 Vue.use(VModal, {

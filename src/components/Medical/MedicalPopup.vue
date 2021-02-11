@@ -129,7 +129,7 @@ export default {
         phone_number: this.phone_number,
         notes: this.notes,
       };
-      console.log(patient_Info)
+      console.log(patient_Info);
       axios
         .post(url, patient_Info, {
           headers: {
@@ -140,7 +140,6 @@ export default {
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
-          alert(response.message);
           this.$emit("close");
         })
         .catch(function (error) {

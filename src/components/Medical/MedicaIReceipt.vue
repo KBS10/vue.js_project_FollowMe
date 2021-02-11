@@ -130,6 +130,7 @@ export default {
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
+          this.$store.state.checkMedicalRoute = true;
           console.log(response);
         })
         .catch(function (error) {

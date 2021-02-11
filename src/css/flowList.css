@@ -1,0 +1,14 @@
+.FlowListPage {
+    float: right;
+    width: 700px;
+    height: auto;
+}
+.flowlist{
+    float: right;
+    width: 350px;
+}
+
+.room {
+    float: left;
+    width: 350px;
+}

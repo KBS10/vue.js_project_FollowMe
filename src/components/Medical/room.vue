@@ -43,7 +43,6 @@ export default {
     return {
       component: "진료실",
       componentsArray: ["진료실", "검사실"],
-      url: "http://172.26.3.122:8000/api",
       room_list: {},
       medical_office_list: {},
       examination_room_list: {},
@@ -51,12 +50,13 @@ export default {
   },
   mounted() {
     axios
-      .get(`${this.url}/medical/room_info`, {
+      .get(this.$store.state.url + "/api/medical/room_info", {
         headers: {
           Authorization: "Bearer " + this.$cookie.get("accesstoken"),
         },
       })
       .then((res) => {
+        console.log(res)
         this.room_list = res.data.room_list;
         this.medical_office_list_set();
         this.examination_room_list_set();
