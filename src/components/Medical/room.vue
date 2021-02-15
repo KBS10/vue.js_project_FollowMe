@@ -2,6 +2,8 @@
   <div class="room">
     <div>
       <v-btn
+      color="primary"
+        id="clickRoom"
         v-for="item in componentsArray"
         :key="item"
         @click="sortRoom(item)"
@@ -56,7 +58,7 @@ export default {
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         this.room_list = res.data.room_list;
         this.medical_office_list_set();
         this.examination_room_list_set();

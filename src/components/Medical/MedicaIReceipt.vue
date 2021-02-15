@@ -98,15 +98,19 @@ export default {
       doctor_name: "김범수",
       first_category: "초진",
       storage: 0,
-      myTime: "00:00:00",
+      myTime: "",
     };
   },
   mounted() {
-    var date = new Date();
-    this.myTime =
-      date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    this.current_time();
   },
   methods: {
+    current_time() {
+      let now = new Date();
+      this.myTime =
+        now.getHours() + ":" + now.getMinutes() + ":" + now.getSeconds();
+      setTimeout(this.current_time, 1000);
+    },
     setClinic(value) {
       const url = this.$store.state.url + "/api/medical/clinic_setting";
       axios
@@ -135,6 +139,7 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          alert("사용자의 권한이 없습니다");
         });
     },
   },

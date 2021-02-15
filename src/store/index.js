@@ -18,12 +18,15 @@ export default new Vuex.Store({
     ///////////////////////////////////
     beaconInfoMap: null,
     beaconInfoMarkers: [], // 구글 인퍼 마커 정보 저장
-    AdminInfoBeacon: [], // axios 통신으로 비콘의 정보 저장
+    AdminInfoBeacon: [], // axios 통신으로 비콘의 
+    ///////////////////////////////////
+    nodeInfoMap: null,
+    nodeInfoMarkers: [], // 구글 인퍼 마커 정보 저장
+    NodeInfo: [], // axios 통신으로 비콘의 정보 저장
     ///////////////////////////////////
     patient_list: [], // 이름으로 환자의 목록을 저장
     patient_Info: {
       clinic: "",
-      flow: [],
       patient: {
         patient_id: "",
         patient_name: "",
@@ -35,7 +38,9 @@ export default new Vuex.Store({
         notes: "",
       }
     },
-    checkMedicalRoute: true,
+    checkMedicalRoute: false,
+    checkPatientFlow: false,
+    rooms: [],
     token: ""
   },
   mutations: {},

@@ -1,4 +1,5 @@
 .FlowListPage {
+    text-align: center;
     float: right;
     width: 700px;
     height: auto;
@@ -11,4 +12,34 @@
 .room {
     float: left;
     width: 350px;
+}
+.table_listflow{
+    width: 350px;
+    text-align: center;
+}
+.table_listflow td{
+    border: 1px solid ;
+    width:100px;
+    background-color: antiquewhite;
+}
+#draggable{
+    display: inline-block;
+    width: 350px;
+    background-color: beige;
+}
+
+#number{
+    background-color: aqua;
+    width: 100px;
+    height: 100px;
+}
+
+.rooms_spans {width:100%; display: inline-block;}
+.rooms_spans span {width:115px; display:inline-block;}
+
+#clickRoom{
+    background-color: #1867C0;
+    color: white;
+    font-weight: bold;
+    margin: 20px;
 }

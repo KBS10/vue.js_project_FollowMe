@@ -77,13 +77,47 @@
         </td>
       </tr>
     </table>
+
+    <div v-switch="$store.state.checkPatientFlow">
+      <div v-case="true">
+        <v-btn @click="checkPatientFlow()">이전 진료동선 확인</v-btn>
+      </div>
+      <div v-case="false"></div>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({}),
   mounted() {},
-  methods: {}
+  methods: {
+    checkPatientFlow() {
+      this.$store.state.checkMedicalRoute = true;
+      console.log(this.$store.state.patient_Info.patient.patient_id);
+      axios
+        .post(
+          this.$store.state.url + "/api/medical/flow_list",
+          {
+            patient_id: this.$store.state.patient_Info.patient.patient_id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+            },
+          }
+        )
+        .then((res) => {
+          for (let i = 0; i < res.data.flow.length; i++) {
+            this.$store.state.rooms.push(res.data.flow[i].room_location);
+          }
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
 };
 </script>

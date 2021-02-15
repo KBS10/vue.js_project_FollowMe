@@ -1,60 +1,48 @@
 <template>
   <div class="listflow">
     <h1>환자 동선 설정</h1>
-    <grid
-      :draggable="true"
-      :sortable="true"
-      :items="rooms"
-      :height="100"
-      :width="100"
+    <table class="table_listflow">
+      <tr>
+        <td>순서</td>
+        <td>호실</td>
+        <td>삭제</td>
+      </tr>
+    </table>
+    <draggable
+      v-model="$store.state.rooms"
+      @start="drag = true"
+      @end="drag = false"
     >
-      <template slot="cell" scope="rooms">
-        <v-btn>{{ rooms.item.room_name }}</v-btn>
-      </template>
-    </grid>
+      <div
+        v-for="(element, i) in $store.state.rooms"
+        :key="i"
+        class="rooms_spans"
+      >
+        <span>{{ i + 1 }}</span>
+        <span>{{ element.room_name }}</span>
+        <span>
+          <button class="beaconcontrolbutton_delete" @click="deleteRooom(i)">
+            <img src="../../img/trash.png" />
+          </button>
+        </span>
+      </div>
+    </draggable>
     <v-btn @click="flow_submit"> submit </v-btn>
   </div>
 </template>
 
 <script>
 import { EventBus } from "../../utils/bus";
+import draggable from "vuedraggable";
 import axios from "axios";
 export default {
   name: "FlowList",
-  components: {},
-  props: {
-    gridWidth: {
-      type: Number,
-      default: -1,
-    },
-    cellWidth: {
-      type: Number,
-      default: 80,
-    },
-    cellHeight: {
-      type: Number,
-      default: 80,
-    },
-    draggable: {
-      type: Boolean,
-      default: false,
-    },
-    dragDelay: {
-      type: Number,
-      default: 0,
-    },
-    sortable: {
-      type: Boolean,
-      default: false,
-    },
-    center: {
-      type: Boolean,
-      default: false,
-    },
+  components: {
+    draggable,
   },
+  props: {},
   data() {
     return {
-      rooms : [],
       flow_sequence: 1,
     };
   },
@@ -62,17 +50,25 @@ export default {
     EventBus.$on("room", (room) => {
       room.flow_sequence = this.flow_sequence;
       this.flow_sequence++;
-      this.rooms.push(room);
+      this.$store.state.rooms.push(room);
     });
   },
+  mounted() {},
   methods: {
+    deleteRooom(index) {
+      this.$delete(this.$store.state.rooms, index);
+    },
     flow_submit() {
-      console.log(this.rooms)
+      for (let i = 0; i < this.$store.state.rooms.length; i++) {
+        this.$store.state.rooms[i].flow_sequence = i + 1;
+        console.log(this.$store.state.rooms[i].flow_sequence);
+      }
+      console.log(this.$store.state.rooms);
       axios
         .post(
           this.$store.state.url + "/api/medical/flow_setting",
           {
-            flow: this.rooms,
+            flow: this.$store.state.rooms,
             patient_id: this.$store.state.patient_Info.patient.patient_id,
           },
           {
@@ -83,7 +79,7 @@ export default {
         )
         .then((response) => {
           this.$store.state.checkMedicalRoute = false;
-          this.rooms = [];
+          this.$store.state.rooms = [];
           console.log(response);
         })
         .catch((error) => {

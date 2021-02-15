@@ -39,6 +39,7 @@ export default {
           }
         )
         .then((response) => {
+          console.log(response)
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
@@ -57,6 +58,7 @@ export default {
           this.$store.state.patient_Info.patient.phone_number =
             response.data.patient.phone_number;
           this.$store.state.patient_Info.patient.notes = response.data.patient.notes;
+          this.$store.state.checkPatientFlow = true;
           this.$emit("close");
         })
         .catch(function (error) {
