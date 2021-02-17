@@ -85,6 +85,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+        EventBus.$emit("showHistory", "진료데이터 보여줌");
     },
   },
 };

@@ -22,7 +22,9 @@ export default new Vuex.Store({
     ///////////////////////////////////
     nodeInfoMap: null,
     nodeInfoMarkers: [], // 구글 인퍼 마커 정보 저장
-    NodeInfo: [], // axios 통신으로 비콘의 정보 저장
+    NodeInfo: [],
+    NodeDistance: [],
+    nodePolyline: [],
     ///////////////////////////////////
     patient_list: [], // 이름으로 환자의 목록을 저장
     patient_Info: {
