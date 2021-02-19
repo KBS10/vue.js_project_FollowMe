@@ -33,16 +33,6 @@ export default {
   },
   created() {},
   methods: {
-    // Sets the map on all markers in the array.
-    setMaponAll(map) {
-      for (let i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
-        this.$store.state.beaconControlMarkers[i].setMap(map);
-      }
-    },
-    // 마커 하면에서 만 안보이고 배열에는 정의되어있음
-    clearMarker() {
-      this.setMaponAll(null);
-    },
     // 이전 자료 불러오기
     getBeforeBeaconInfo() {
       const url = this.$store.state.url + "/api/admin/beacon_setting_main";
@@ -68,12 +58,29 @@ export default {
               response.data.beacon_info[i].lng,
               response.data.beacon_info[i].major
             );
+            this.clearMarker(response.data.beacon_info[i].major);
           }
         })
         .catch(function (error) {
           console.log(error);
           console.log("이전 자료가 없습니다");
         });
+    },
+
+    setMaponAll(map, beaconfloor) {
+      for (var i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
+        if (this.$store.state.beaconControlMarkers[i].floor != beaconfloor) {
+          this.$store.state.beaconControlMarkers[i].setMap(map);
+        } else {
+          this.$store.state.beaconControlMarkers[i].setMap(
+            this.$store.state.beaconControlMap
+          );
+        }
+      }
+    },
+    // 마커 하면에서 만 안보이고 배열에는 정의되어있음
+    clearMarker(beaconfloor) {
+      this.setMaponAll(null, beaconfloor);
     },
     // 배열 안에 등록되어 있는 마커 모두 삭제
     deleteMarkers() {

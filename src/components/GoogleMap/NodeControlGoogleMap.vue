@@ -14,7 +14,7 @@ export default {
   data: () => ({
     eventOn: false,
     mapOptions: {
-      zoom: 20,
+      zoom: 21,
       center: { lat: 35.896711614383025, lng: 128.62058708189507 },
       disableDefaultUI: true,
       mapTypeControl: true,
@@ -127,6 +127,7 @@ export default {
         document.getElementById("NodeControlGoogleMap"),
         this.mapOptions
       );
+
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
       const bounds = new window.google.maps.LatLngBounds(
         new window.google.maps.LatLng(35.89651393057683, 128.6201298818298),

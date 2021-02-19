@@ -1,7 +1,10 @@
 <template>
   <div class="AdminNode">
     <h1>실내 동선 설정 및 관리</h1>
-
+    <div id="adminnode_button">
+      <v-btn @click="checkNodeRole(true)">노드 추가 및 삭제</v-btn>
+      <v-btn @click="checkNodeRole(false)">노드 거리 설정</v-btn>
+    </div>
     <div class="adminnode_GoogleMap">
       <GoogleMap />
     </div>
@@ -31,6 +34,51 @@ export default {
     this.searchNodeInfo();
   },
   methods: {
+    checkNodeRole(checkNodeRole) {
+      if (checkNodeRole) {
+        this.$store.state.nodeInfoMap.addListener("click", (data) => {
+          this.addMarker(
+            this.$store.state.floorBuilding,
+            data.latLng.lat(),
+            data.latLng.lng()
+          );
+          for (var i = 0; i < this.$store.state.NodeDistance.length; i++) {
+            this.clearMarker(
+              this.$store.state.NodeDistance[i].node_a_info.floor
+            );
+          }
+        });
+      } else {
+        console.log(this.$store.state.nodeInfoMarkers);
+        this.$store.state.nodeInfoMarkers.addListener("click", (data) => {
+          console.log(data);
+        });
+      }
+    },
+    setMaponAll(map, nodefloor) {
+      for (var i = 0; i < this.$store.state.NodeInfo.length; i++) {
+        if (this.$store.state.nodeInfoMarkers[i].floor != nodefloor) {
+          this.$store.state.nodeInfoMarkers[i].setMap(map);
+        } else {
+          this.$store.state.nodeInfoMarkers[i].setMap(
+            this.$store.state.nodeInfoMap
+          );
+        }
+      }
+      for (var k = 0; k < this.$store.state.nodePolyline.length; k++) {
+        if (this.$store.state.nodePolyline[k].floor != nodefloor) {
+          this.$store.state.nodePolyline[k].setMap(map);
+        } else {
+          this.$store.state.nodePolyline[k].setMap(
+            this.$store.state.nodeInfoMap
+          );
+        }
+      }
+    },
+    // 마커 하면에서 만 안보이고 배열에는 정의되어있음
+    clearMarker(nodefloor) {
+      this.setMaponAll(null, nodefloor);
+    },
     searchNodeInfo() {
       axios
         .get(this.$store.state.url + "/api/admin/node_setting_main", {
@@ -40,7 +88,6 @@ export default {
         })
         .then((response) => {
           console.log(response);
-          
           // Node Marker 추가
           for (let i = 0; i < response.data.node_info.length; i++) {
             this.$store.state.NodeInfo.push(response.data.node_info[i]);
@@ -65,6 +112,9 @@ export default {
             ];
             this.addPolylineToMap(
               nodeLocation,
+              this.$store.state.NodeDistance[i].node_a_info.floor
+            );
+            this.clearMarker(
               this.$store.state.NodeDistance[i].node_a_info.floor
             );
           }

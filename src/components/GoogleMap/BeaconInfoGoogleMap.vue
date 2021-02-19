@@ -24,17 +24,17 @@ export default {
       disableDefaultUI: true,
       mapTypeControl: true,
       mapTypeControlOptions: {
-        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU
-      }
+        style: window.google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+      },
     },
     floorimage: {
       floor2:
         "https://user-images.githubusercontent.com/53847348/99892072-3df2f480-2cb4-11eb-9d56-bae02c75b242.png",
       floor3:
-        "https://user-images.githubusercontent.com/53847348/99892066-12700a00-2cb4-11eb-898f-1679f957aecc.png"
+        "https://user-images.githubusercontent.com/53847348/99892066-12700a00-2cb4-11eb-898f-1679f957aecc.png",
     },
     beaconImage:
-      "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png"
+      "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
   }),
   mounted() {
     this.initMap();
@@ -124,6 +124,7 @@ export default {
         document.getElementById("BeaconInfoGoogleMap"),
         this.mapOptions
       );
+
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
       const bounds = new window.google.maps.LatLngBounds(
         new window.google.maps.LatLng(35.89651393057683, 128.6201298818298),
@@ -177,7 +178,7 @@ export default {
       const overlay = new USGSOverlay(bounds, this.floorimage.floor2);
       overlay.setMap(this.$store.state.beaconInfoMap);
     },
-  }
+  },
 };
 </script>
 
