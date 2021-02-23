@@ -20,15 +20,26 @@ export default new Vuex.Store({
     beaconInfoMarkers: [], // 구글 인퍼 마커 정보 저장
     AdminInfoBeacon: [], // axios 통신으로 비콘의 
     ///////////////////////////////////
+    nodeControlMap: null,
+    nodeControlMarkers: [], // 노드 마커 정보 저장
+    nodeControlInfo: [],
+    ///////////////////////////////////
     nodeInfoMap: null,
-    nodeInfoMarkers: [], // 구글 인퍼 마커 정보 저장
-    NodeInfo: [],
+    NodeInfoInfo: [],
+    nodeDistanceMarkers: [],
     NodeDistance: [],
     nodePolyline: [],
+
     ///////////////////////////////////
     patient_list: [], // 이름으로 환자의 목록을 저장
     patient_Info: {
-      clinic: "",
+      clinic: {
+        clinic_id: 0,
+        clnic_subject_name: "",
+        clinic_time: "",
+        doctor_name: "",
+      },
+      clinic_info: [],
       patient: {
         patient_id: "",
         patient_name: "",

@@ -11,11 +11,15 @@
             name="select"
             style="width: 200px; height: 25px"
             v-model="clinic_subject_name"
+            @click="findRoom_name(clinic_subject_name)"
           >
-            <option value="정신과">정신과</option>
-            <option value="이비인후과">이비인후과</option>
-            <option value="정형외과">정형외과</option>
-            <option value="비뇨기과">비뇨기과</option>
+            <option
+              placeholder="진료 과목"
+              v-for="(clinicSubjectName, i) in hospital_clinicSubjectName"
+              :key="i"
+            >
+              {{ clinicSubjectName }}
+            </option>
           </select>
         </td>
         <td>진료실</td>
@@ -26,11 +30,13 @@
             style="width: 200px; height: 25px"
             v-model="room_name"
           >
-            <option value="진료실1">진료실1</option>
-            <option value="진료실2">진료실2</option>
-            <option value="진료실3">진료실3</option>
-            <option value="진료실4">진료실4</option>
-            <option value="진료실5">진료실5</option>
+            <option
+              placeholder="진료실"
+              v-for="(roomName, i) in hospital_roomName"
+              :key="i"
+            >
+              {{ roomName }}
+            </option>
           </select>
         </td>
       </tr>
@@ -55,10 +61,13 @@
             style="width: 200px; height: 25px"
             v-model="doctor_name"
           >
-            <option value="김범수">김범수</option>
-            <option value="변희주">변희주</option>
-            <option value="신천은">신천은</option>
-            <option value="이주용">이주용</option>
+            <option
+              placeholder="담당 의사"
+              v-for="(doctor_name, i) in hospital_doctor_name"
+              :key="i"
+            >
+              {{ doctor_name }}
+            </option>
           </select>
         </td>
       </tr>
@@ -89,22 +98,49 @@
 </template>
 
 <script>
+import { EventBus } from "../../utils/bus";
 import axios from "axios";
 export default {
   data: () => {
     return {
-      room_name: "진료실1",
-      clinic_subject_name: "정신과",
-      doctor_name: "김범수",
+      clinic_subject_name: "",
+      room_name: "",
+      doctor_name: "",
       first_category: "초진",
-      storage: 0,
+      storage: null,
       myTime: "",
+      hospital_Info: [],
+      hospital_clinicSubjectName: [],
+      hospital_roomName: [],
+      hospital_doctor_name: [],
     };
   },
   mounted() {
     this.current_time();
+    EventBus.$on("searchHospitalInfo", (data) => {
+      this.hospital_Info = data;
+      for (let i = 0; i < data.length; i++) {
+        this.hospital_clinicSubjectName[i] = data[i].clinic_subject_name;
+      }
+    });
   },
   methods: {
+    findRoom_name(data) {
+      console.log(data);
+      this.hospital_roomName = [];
+      this.hospital_doctor_name = [];
+      for (let i = 0; i < this.hospital_Info.length; i++) {
+        if (data == this.hospital_Info[i].clinic_subject_name) {
+          for (let k = 0; k < this.hospital_Info[i].clinic_room.length; k++) {
+            this.hospital_roomName[k] = this.hospital_Info[i].clinic_room[k];
+          }
+          for (let j = 0; j < this.hospital_Info[i].doctor.length; j++) {
+            this.hospital_doctor_name[j] = this.hospital_Info[i].doctor[j];
+            // console.log(this.hospital_doctor_name[j]);
+          }
+        }
+      }
+    },
     current_time() {
       let now = new Date();
       this.myTime =
@@ -112,6 +148,8 @@ export default {
       setTimeout(this.current_time, 1000);
     },
     setClinic(value) {
+      console.log(this.$store.state.patient_Info.clinic.clinic_id);
+      console.log(value);
       const url = this.$store.state.url + "/api/medical/clinic_setting";
       axios
         .post(

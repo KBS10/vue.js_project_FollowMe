@@ -2,6 +2,17 @@
   <div class="MedicalHistory">
     <h2>진료 내역</h2>
     <div class="medicalhistory_historyHeader">
+      <select
+        class="medicalreceipt_clinic"
+        name="select"
+        style="width: 200px; height: 25px"
+        v-model="hospital_subject_name"
+        @click="searchHospitalSubjectName(hospital_subject_name)"
+      >
+        <option v-for="(clinic_room, i) in clinic_room" :key="i">
+          {{ clinic_room }}
+        </option>
+      </select>
       <input class="medicalhistory_date" type="date" v-model="mydate" />
 
       진료 여부
@@ -33,7 +44,7 @@
         <label for="history_radioWait">대기</label>
       </div>
       <!--  -->
-      <v-btn @click="setClinic()">조회</v-btn>
+      <v-btn @click="setClinic(hospital_subject_name)">조회</v-btn>
     </div>
 
     <table class="medicalhistory_table" border="1">
@@ -48,10 +59,14 @@
         <td>진료종료</td>
       </tr>
       <!-- 변경 사항 -->
-      <tr v-for="info in clinic_list" :key="info.clinic_id">
+      <tr
+        @click="setPatientInfo(clinic_list, i)"
+        v-for="(info, i) in clinic_list"
+        :key="i"
+      >
         <td>{{ info.patient_id }}</td>
         <td>{{ info.patient.patient_name }}</td>
-        <td>{{ info.clinic_subject_name }}</td>
+        <td id="clinic_subject_name">{{ info.clinic_subject_name }}</td>
         <td>{{ info.room_name }}</td>
         <td>{{ info.doctor_name }}</td>
         <td>{{ info.clinic_time }}</td>
@@ -79,6 +94,21 @@ import { EventBus } from "../../utils/bus";
 export default {
   data: () => {
     return {
+      clinic_room: [
+        "마취과",
+        "이비인후과",
+        "정신과",
+        "내과",
+        "외과",
+        "신경외과",
+        "순환기내과",
+        "비뇨기과",
+        "산부인과",
+        "성형외과",
+        "소아과",
+        "병리과",
+      ],
+      hospital_subject_name: "",
       history: "history_radioTotal", //radio 이벤트시 변경
       clinic_list: [], //진료 목록(실제로 보이는 데이터)
       clinic_record: [], //진료 전체 목록
@@ -91,21 +121,52 @@ export default {
   created() {
     this.subscribe();
   },
-  mounted(){
+  mounted() {
+    this.findClinicRoom();
     EventBus.$on("showHistory", (data) => {
       console.log(data);
       this.setClinic();
     });
   },
   methods: {
+    searchHospitalSubjectName(data) {
+      this.hospital_subject_name = data;
+    },
+    findClinicRoom() {
+      const url = this.$store.state.url + "/api/medical/clinic_subject";
+      axios
+        .get(url, {
+          headers: {
+            Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+          },
+        })
+        .then((response) => {
+          if (response.data.error == "Unauthorized") {
+            alert("사용자의 권한이 없습니다");
+          }
+
+          for (let i = 0; i < response.data.clinic_subject.length; i++) {
+            this.clinic_room[i] =
+              response.data.clinic_subject[i].clinic_subject_name;
+          }
+          console.log(this.clinic_room);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    setPatientInfo(data, index) {
+      console.log(data[index]);
+      this.$store.state.patient_Info.patient = data[index].patient;
+      this.$store.state.checkPatientFlow = true;
+    },
     //pusher 이벤트 리스너
     subscribe() {
       let pusher = new Pusher("7ed3a4ce8ebfe9741f98", { cluster: "ap3" });
       pusher.subscribe("FollowMe_standby_number");
       pusher.bind("FollowMe_standby_number", (data) => {
+        console.log(data);
         this.setClinic();
-        this.$store.state.patient_Info.patient = data.event[0];
-        this.$store.state.checkPatientFlow = true;
       });
     },
     //진료 (전체, 완료, 대기) 판단
@@ -165,11 +226,13 @@ export default {
         });
     },
     setClinic() {
+      console.log(this.hospital_subject_name);
       const url = this.$store.state.url + "/api/medical/clinic_record";
       axios
         .post(
           url,
           {
+            clinic_subject_name: this.hospital_subject_name,
             clinic_date: this.mydate,
           },
           {
@@ -179,6 +242,7 @@ export default {
           }
         )
         .then((response) => {
+          console.log(response);
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
@@ -193,3 +257,5 @@ export default {
   },
 };
 </script>
+<style scoped>
+</style>

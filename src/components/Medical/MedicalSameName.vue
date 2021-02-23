@@ -22,6 +22,7 @@
 
 <script>
 import axios from "axios";
+import { EventBus } from "../../utils/bus";
 export default {
   data: () => ({}),
   created() {},
@@ -39,10 +40,15 @@ export default {
           }
         )
         .then((response) => {
-          console.log(response)
+          console.log(response);
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
+          this.$store.state.patient_Info.clinic.clinic_id = response.data.clinic.clinic_id;
+          this.$store.state.patient_Info.clinic.clnic_subject_name = response.data.clinic.clnic_subject_name;
+          this.$store.state.patient_Info.clinic.clinic_time = response.data.clinic.clinic_time;
+          this.$store.state.patient_Info.clinic.doctor_name = response.data.clinic.doctor_name;
+
           this.$store.state.patient_Info.patient.patient_id =
             response.data.patient.patient_id;
           this.$store.state.patient_Info.patient.patient_name =
@@ -57,13 +63,24 @@ export default {
             response.data.patient.detail_address;
           this.$store.state.patient_Info.patient.phone_number =
             response.data.patient.phone_number;
-          this.$store.state.patient_Info.patient.notes = response.data.patient.notes;
+          this.$store.state.patient_Info.patient.notes =
+            response.data.patient.notes;
+          this.$store.state.patient_Info.clinic_info =
+            response.data.clinic_info;
+
           this.$store.state.checkPatientFlow = true;
+          this.searchHospitalInfo();
           this.$emit("close");
         })
         .catch(function (error) {
           console.log(error);
         });
+    },
+    searchHospitalInfo() {
+      EventBus.$emit(
+        "searchHospitalInfo",
+        this.$store.state.patient_Info.clinic_info
+      );
     },
   },
 };
