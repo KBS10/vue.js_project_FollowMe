@@ -216,7 +216,7 @@ export default {
           if (response.data.error == "Unauthorized") {
             alert("사용자의 권한이 없습니다");
           }
-          alert("접수가 완료되었습니다.");
+          alert("접수가 종료되었습니다.");
           console.log(response);
           this.clinic_record = response.data.clinic_record;
           this.history_check(); //조회 이벤트 후 (전체, 완료, 대기) 판단

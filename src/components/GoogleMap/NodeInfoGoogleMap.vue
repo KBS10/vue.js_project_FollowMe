@@ -181,7 +181,7 @@ export default {
           }
         }
       }
-      var overlay = new USGSOverlay(bounds, this.floorimage.floor2);
+      var overlay = new USGSOverlay(bounds, this.floorimage.floor3);
       overlay.setMap(this.$store.state.nodeInfoMap);
     },
   },

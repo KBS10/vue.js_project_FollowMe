@@ -4,7 +4,6 @@
     <table>
       <tr>
         <td>순번</td>
-        <td>고유번호</td>
         <td>위도</td>
         <td>경도</td>
         <td>층수</td>
@@ -37,57 +36,10 @@ export default {
     };
   },
   mounted() {
-    this.searchNodeInfo();
+    this.searchNodeControl();
     this.checkNodeRole();
   },
   methods: {
-    searchNodeInfo() {
-      axios
-        .get(this.$store.state.url + "/api/admin/node_setting_main", {
-          headers: {
-            Authorization: "Bearer " + this.$cookie.get("accesstoken"),
-          },
-        })
-        .then((response) => {
-          // console.log("노드 정보 얻어오기", response);
-          this.$store.state.nodeControlInfo = [];
-          // Node Marker 추가
-          for (let i = 0; i < response.data.node_info.length; i++) {
-            this.$store.state.nodeControlInfo.push(response.data.node_info[i]);
-            this.addMarker(
-              response.data.node_info[i].floor,
-              response.data.node_info[i].lat,
-              response.data.node_info[i].lng
-            );
-            this.clearMarker(response.data.node_info[i].floor);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    NodeUpdate() {
-      console.log("노드 업데이트 확인", this.$store.state.nodeControlInfo);
-      axios
-        .post(
-          this.$store.state.url + "/api/admin/node_update",
-          {
-            node: this.$store.state.nodeControlInfo,
-            node_delete : this.deleteNodeArray,
-          },
-          {
-            headers: {
-              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
     checkNodeRole() {
       this.$store.state.nodeControlMap.addListener("click", (data) => {
         console.log(data);
@@ -96,7 +48,7 @@ export default {
           lat: data.latLng.lat(),
           lng: data.latLng.lng(),
         });
-        this.addMarker(
+        this.addNodecontrolMarker(
           this.$store.state.floorBuilding,
           data.latLng.lat(),
           data.latLng.lng()
@@ -108,7 +60,44 @@ export default {
         });
       }
     },
-    addMarker(floor, lat, lng) {
+    searchNodeControl() {
+      axios
+        .get(this.$store.state.url + "/api/admin/node_setting_main", {
+          headers: {
+            Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+          },
+        })
+        .then((response) => {
+          // console.log("노드 정보 얻어오기", response);
+
+          this.$store.state.nodeControlMarkers = [];
+          this.$store.state.nodeControlInfo = [];
+          // Node Marker 추가
+          for (let i = 0; i < response.data.node_info.length; i++) {
+            this.$store.state.nodeControlInfo.push(response.data.node_info[i]);
+            this.addNodecontrolMarker(
+              response.data.node_info[i].floor,
+              response.data.node_info[i].lat,
+              response.data.node_info[i].lng,
+              i
+            );
+            this.clearNodeControlMarker(response.data.node_info[i].floor);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    attachSecretMessage(marker, secretMessage) {
+      const infoWindowMessage = "노드번호 : " + secretMessage.node_id;
+      const infowindow = new window.google.maps.InfoWindow({
+        content: infoWindowMessage,
+      });
+      marker.addListener("click", () => {
+        infowindow.open(marker.get("map"), marker);
+      });
+    },
+    addNodecontrolMarker(floor, lat, lng, index) {
       const icons = {
         url: this.nodeImage,
         scaledSize: new window.google.maps.Size(15, 15),
@@ -121,9 +110,10 @@ export default {
         icon: icons,
       });
       this.$store.state.nodeControlMarkers.push(marker);
+      this.attachSecretMessage(marker, this.$store.state.nodeControlInfo[index]);
     },
 
-    setMaponAll(map, nodefloor) {
+    setNodeControlMap(map, nodefloor) {
       for (var i = 0; i < this.$store.state.nodeControlInfo.length; i++) {
         if (this.$store.state.nodeControlMarkers[i].floor != nodefloor) {
           this.$store.state.nodeControlMarkers[i].setMap(
@@ -135,8 +125,8 @@ export default {
       }
     },
     // 마커 하면에서 만 안보이고 배열에는 정의되어있음
-    clearMarker(nodefloor) {
-      this.setMaponAll(null, nodefloor);
+    clearNodeControlMarker(nodefloor) {
+      this.setNodeControlMap(null, nodefloor);
     },
 
     //////////////////////////////////////////////////////////////////구현 완료

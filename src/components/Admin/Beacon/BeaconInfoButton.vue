@@ -12,12 +12,12 @@
       <!-- <v-btn style="width: 125px" class="beaconInfobutton btn_primary"
         >비콘 정보</v-btn
       > -->
-      <v-btn
+      <!-- <v-btn
         style="width: 125px"
         class="beaconInfobutton btn_primary"
         @click="showCircle()"
         >비콘 반경</v-btn
-      >
+      > -->
     </div>
   </div>
 </template>
@@ -100,7 +100,8 @@ export default {
             this.addMarker(
               response.data.beacon_info[i].lat,
               response.data.beacon_info[i].lng,
-              response.data.beacon_info[i].major
+              response.data.beacon_info[i].major,
+              i
             );
             this.addCircle(
               response.data.beacon_info[i].lat,
@@ -125,11 +126,22 @@ export default {
         }
       }
     },
+    attachSecretMessage(marker, secretMessage) {
+      console.log(secretMessage);
+      const infoWindowMessage = "Minor : " + secretMessage.beacon_id_minor;
+      const infowindow = new window.google.maps.InfoWindow({
+        content: infoWindowMessage,
+      });
+      marker.addListener("click", () => {
+        infowindow.open(marker.get("map"), marker);
+      });
+    },
+
     // 마커 하면에서 만 안보이고 배열에는 정의되어있음
     clearMarker(beaconfloor) {
       this.setMaponAll(null, beaconfloor);
     },
-    addMarker(lat, lng, major) {
+    addMarker(lat, lng, major, index) {
       const icons = {
         url: this.beaconErrorImage,
         scaledSize: new window.google.maps.Size(20, 25),
@@ -142,6 +154,7 @@ export default {
         floor: major,
       });
       this.$store.state.beaconInfoMarkers.push(marker);
+      this.attachSecretMessage(marker, this.$store.state.AdminInfoBeacon[index]);
     },
     addCircle(lat, lng, major) {
       const circle = new window.google.maps.Circle({
