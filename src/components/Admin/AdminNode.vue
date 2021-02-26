@@ -65,6 +65,9 @@ export default {
   },
   mounted() {},
   methods: {
+    ////////////////////////////////////////////////////////
+    // 실내 동선 설정 페이지 아이콘 설정
+    ////////////////////////////////////////////////////////
     swapComponent(item) {
       this.component = item;
       console.log(this.component);
@@ -75,26 +78,8 @@ export default {
         this.searchNodeInfo();
       }
     },
-    attachSecretMessage(marker, node_id) {
-      marker.addListener("click", (data) => {
-        // console.log(
-        //   "node_id : ",
-        //   node_id,
-        //   "lat : ",
-        //   data.latLng.lat(),
-        //   " lng : ",
-        //   data.latLng.lng()
-        // );
-        const nodeDistanceMarker = {
-          node_id: node_id,
-          lat: data.latLng.lat(),
-          lng: data.latLng.lng(),
-        };
-        EventBus.$emit("eventNodeDistanceData", nodeDistanceMarker);
-      });
-    },
     /////////////////////////////////////////////////////////////////
-    // 노드 인포 페이지 함수
+    // 노드 정보 찾기 함수
     ////////////////////////////////////////////////////////////////
     searchNodeInfo() {
       axios
@@ -109,11 +94,6 @@ export default {
           this.$store.state.NodeDistance = [];
           this.$store.state.nodePolyline = [];
           console.log("노드 정보 : ", response);
-          // console.log("노드 길이 : ", response.data.node_info.length);
-          // console.log(
-          //   "노드 간의 거리 길이 : ",
-          //   response.data.node_distance.length
-          // );
           // Node Marker 추가
           for (let i = 0; i < response.data.node_info.length; i++) {
             this.$store.state.NodeInfoInfo.push(response.data.node_info[i]);
@@ -139,6 +119,7 @@ export default {
               },
             ];
             this.addPolylineToMap(
+              i,
               nodeLocation,
               this.$store.state.NodeDistance[i].node_a_info.floor
             );
@@ -146,14 +127,14 @@ export default {
               this.$store.state.NodeDistance[i].node_a_info.floor
             );
           }
-
-          // console.log("노드 간의 거리 길이 : ", this.$store.state.NodeDistance);
-          // console.log("노드 간의 거리 길이 : ", this.$store.state.nodePolyline);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    ////////////////////////////////////////////////////////
+    // 1층, 2층 구별해서 마커및 폴리라인 설정 함수
+    ////////////////////////////////////////////////////////
     setDistanceMap(map, nodefloor) {
       for (var i = 0; i < this.$store.state.NodeInfoInfo.length; i++) {
         if (this.$store.state.nodeDistanceMarkers[i].floor != nodefloor) {
@@ -177,6 +158,9 @@ export default {
     clearDistanceMarker(nodefloor) {
       this.setDistanceMap(null, nodefloor);
     },
+    ////////////////////////////////////////////////////////
+    // 노드 정보 배열에 추가하는 함수
+    ////////////////////////////////////////////////////////
     addDistanceMarker(floor, lat, lng, node_id) {
       const icons = {
         url: this.nodeImage,
@@ -192,18 +176,45 @@ export default {
       });
       this.$store.state.nodeDistanceMarkers.push(marker);
       // Node Distance Marker Click Event
-      this.attachSecretMessage(marker, node_id);
+      this.clickNodeMarkerCheck(marker, node_id);
     },
-    addPolylineToMap(value, floor) {
+    ////////////////////////////////////////////////////////
+    // 노드 폴리라인 배열에 추가하는 함수
+    ////////////////////////////////////////////////////////
+    addPolylineToMap(index, value, floor) {
       const flightPath = new window.google.maps.Polyline({
         map: this.$store.state.nodeInfoMap,
+        index: index,
         floor: floor,
         path: value,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 6,
       });
+      this.clickNodePolylineCheck(flightPath);
       this.$store.state.nodePolyline.push(flightPath);
+    },
+    ////////////////////////////////////////////////////////
+    // 노드 마커 클릭시 실행되는 함수
+    ////////////////////////////////////////////////////////
+    clickNodeMarkerCheck(marker, node_id) {
+      marker.addListener("click", (data) => {
+        console.log(data);
+        const nodeDistanceMarker = {
+          node_id: node_id,
+          lat: data.latLng.lat(),
+          lng: data.latLng.lng(),
+        };
+        EventBus.$emit("eventNodeDistanceData", nodeDistanceMarker);
+      });
+    },
+    ////////////////////////////////////////////////////////
+    // 노드 폴리라인 클릭시 실행되는 함수
+    ////////////////////////////////////////////////////////
+    clickNodePolylineCheck(flightPath) {
+      flightPath.addListener("click", (data) => {
+        console.log(data);
+      });
     },
   },
 };

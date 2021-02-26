@@ -20,7 +20,7 @@
         </td>
       </tr>
       <tr>
-        <td>주민 번호</td>
+        <td>생년 월일</td>
         <td>
           <div
             class="medicalInfo_frontSecurityNumber"
@@ -94,6 +94,7 @@ export default {
   mounted() {},
   methods: {
     checkPatientFlow() {
+      this.$store.state.rooms = [];
       this.$store.state.checkMedicalRoute = true;
       console.log(this.$store.state.patient_Info.patient.patient_id);
       axios

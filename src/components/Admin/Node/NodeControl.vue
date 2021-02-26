@@ -89,7 +89,8 @@ export default {
         });
     },
     attachSecretMessage(marker, secretMessage) {
-      const infoWindowMessage = "노드번호 : " + secretMessage.node_id;
+      const infoWindowMessage =
+        "위도 : " + secretMessage.lat + "경도 : " + secretMessage.lng;
       const infowindow = new window.google.maps.InfoWindow({
         content: infoWindowMessage,
       });
@@ -110,7 +111,10 @@ export default {
         icon: icons,
       });
       this.$store.state.nodeControlMarkers.push(marker);
-      this.attachSecretMessage(marker, this.$store.state.nodeControlInfo[index]);
+      this.attachSecretMessage(
+        marker,
+        this.$store.state.nodeControlInfo[index]
+      );
     },
 
     setNodeControlMap(map, nodefloor) {
@@ -146,6 +150,27 @@ export default {
       this.deleteMarker(index);
       this.$delete(this.$store.state.nodeControlInfo, index);
       this.$delete(this.$store.state.nodeControlMarkers, index);
+    },
+    NodeUpdate() {
+      axios
+        .post(
+          this.$store.state.url + "/api/admin/node_update",
+          {
+            node: this.$store.state.nodeControlInfo,
+            node_delete: this.deleteNodeArray,
+          },
+          {
+            headers: {
+              Authorization: "Bearer " + this.$cookie.get("accesstoken"),
+            },
+          }
+        )
+        .then((response) => {
+          console.log("노드 Update" + response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
 };

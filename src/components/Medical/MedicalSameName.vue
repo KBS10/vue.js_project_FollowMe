@@ -12,8 +12,8 @@
       <tr v-for="info in this.$store.state.patient_list" :key="info.patient_id">
         <td>{{ info.patient_id }}</td>
         <td>{{ info.patient_name }}</td>
-        <td>{{ info.phone_number }}</td>
         <td>{{ info.resident_number }}</td>
+        <td>{{ info.phone_number }}</td>
         <td><v-btn @click="getPatientInfo(info.patient_id)">클릭</v-btn></td>
       </tr>
     </table>
