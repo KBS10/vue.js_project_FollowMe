@@ -7,6 +7,7 @@
         <td>위도</td>
         <td>경도</td>
         <td>층수</td>
+        <td>방</td>
         <td>삭제</td>
       </tr>
       <tr v-for="(nodeInfo, i) in this.$store.state.nodeControlInfo" :key="i">
@@ -14,6 +15,29 @@
         <td><input type="text" v-model="nodeInfo.lat" /></td>
         <td><input type="text" v-model="nodeInfo.lng" /></td>
         <td><input type="text" v-model="nodeInfo.floor" /></td>
+        <td>
+          <select
+            style="width: 200px; height: 25px"
+            @change="room_change(i, $event)"
+            class="form-control"
+          >
+            >
+            <option
+              name="room"
+              v-for="(room, j) in room_list"
+              :key="j"
+              :selected="
+                room.room_location_id === nodeInfo.room_id ? true : false
+              "
+              :value="room.room_location_id"
+            >
+              {{ room.room_name }}
+            </option>
+            <option :selected="nodeInfo.room_id === null ? true : false">
+              없음
+            </option>
+          </select>
+        </td>
         <td>
           <button @click="deleteNode(i)">
             <img src="../../../img/trash.png" />
@@ -33,6 +57,7 @@ export default {
       nodeImage:
         "https://user-images.githubusercontent.com/53847348/107948135-c7297700-6fd6-11eb-98d6-d618a826b52f.png",
       deleteNodeArray: [],
+      room_list: [], //전체 목록
     };
   },
   mounted() {
@@ -83,6 +108,8 @@ export default {
             );
             this.clearNodeControlMarker(response.data.node_info[i].floor);
           }
+          //방 정보
+          this.room_list = response.data.room_list;
         })
         .catch((error) => {
           console.log(error);
@@ -151,7 +178,13 @@ export default {
       this.$delete(this.$store.state.nodeControlInfo, index);
       this.$delete(this.$store.state.nodeControlMarkers, index);
     },
+    room_change(i, event) {
+      let room_id = event.target.value;
+      if (event.target.value == "없음") room_id = null;
+      this.$store.state.nodeControlInfo[i]["room_id"] = room_id;
+    },
     NodeUpdate() {
+      console.log(this.$store.state.nodeControlInfo);
       axios
         .post(
           this.$store.state.url + "/api/admin/node_update",

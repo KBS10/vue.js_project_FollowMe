@@ -21,6 +21,9 @@
           <div v-case="'노드 거리 설정'">
             <NodeInfoGoogleMap />
           </div>
+          <div v-case="'노드 방 설정'">
+            <NodeRoomControl />
+          </div>
         </div>
       </div>
 
@@ -43,6 +46,7 @@ import NodeControlGoogleMap from "../GoogleMap/NodeControlGoogleMap";
 import NodeInfoGoogleMap from "../GoogleMap/NodeInfoGoogleMap";
 import NodeControl from "../Admin/Node/NodeControl";
 import NodeInfo from "../Admin/Node/NodeInfo";
+import NodeRoomControl from "../Admin/Node/NodeRoomControl";
 import axios from "axios";
 import { EventBus } from "../../utils/bus";
 export default {
@@ -51,12 +55,13 @@ export default {
     NodeInfoGoogleMap,
     NodeControl,
     NodeInfo,
+    NodeRoomControl,
   },
   data() {
     return {
       eventOn: true,
       component: "노드 추가 및 삭제",
-      componentsArray: ["노드 추가 및 삭제", "노드 거리 설정"],
+      componentsArray: ["노드 추가 및 삭제", "노드 거리 설정", "노드 방 설정"],
       nodeImage:
         "https://user-images.githubusercontent.com/53847348/107948135-c7297700-6fd6-11eb-98d6-d618a826b52f.png",
       node_distance: [],
@@ -93,7 +98,7 @@ export default {
           this.$store.state.nodeDistanceMarkers = [];
           this.$store.state.NodeDistance = [];
           this.$store.state.nodePolyline = [];
-          console.log("노드 정보 : ", response);
+          // console.log("노드 정보 : ", response);
           // Node Marker 추가
           for (let i = 0; i < response.data.node_info.length; i++) {
             this.$store.state.NodeInfoInfo.push(response.data.node_info[i]);
@@ -119,7 +124,7 @@ export default {
               },
             ];
             this.addPolylineToMap(
-              i,
+              this.$store.state.NodeDistance[i].distance_id,
               nodeLocation,
               this.$store.state.NodeDistance[i].node_a_info.floor
             );
@@ -127,6 +132,8 @@ export default {
               this.$store.state.NodeDistance[i].node_a_info.floor
             );
           }
+          // console.log(this.$store.state.NodeDistance);
+          // console.log(this.$store.state.nodePolyline);
         })
         .catch((error) => {
           console.log(error);
@@ -181,18 +188,18 @@ export default {
     ////////////////////////////////////////////////////////
     // 노드 폴리라인 배열에 추가하는 함수
     ////////////////////////////////////////////////////////
-    addPolylineToMap(index, value, floor) {
+    addPolylineToMap(distance_id, path, floor) {
       const flightPath = new window.google.maps.Polyline({
         map: this.$store.state.nodeInfoMap,
-        index: index,
+        distance_id: distance_id,
         floor: floor,
-        path: value,
+        path: path,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 6,
       });
-      this.clickNodePolylineCheck(flightPath);
       this.$store.state.nodePolyline.push(flightPath);
+      this.clickNodePolylineCheck(flightPath, distance_id);
     },
     ////////////////////////////////////////////////////////
     // 노드 마커 클릭시 실행되는 함수
@@ -211,12 +218,40 @@ export default {
     ////////////////////////////////////////////////////////
     // 노드 폴리라인 클릭시 실행되는 함수
     ////////////////////////////////////////////////////////
-    clickNodePolylineCheck(flightPath) {
-      flightPath.addListener("click", (data) => {
-        console.log(data);
+    clickNodePolylineCheck(flightPath, distance_id) {
+      flightPath.addListener("click", () => {
+        console.log("click 시 polyline 데이터 확인" + distance_id);
+        this.deleteNodePolyline(distance_id);
       });
+
+      flightPath.addListener("mouseover", () => {});
+    },
+    ////////////////////////////////////////////////////////
+    // 노드 폴리라인 삭제 함수
+    ////////////////////////////////////////////////////////
+    deleteNodePolyline(distance_id) {
+      console.log("polyline 고유 id 값 : " + distance_id);
+      for (let i = 0; i < this.$store.state.NodeDistance.length; i++) {
+        if (this.$store.state.NodeDistance[i].distance_id === distance_id) {
+          this.deletePolyline(i);
+          this.$delete(this.$store.state.nodePolyline, i);
+          this.$delete(this.$store.state.NodeDistance, i);
+        }
+      }
+    },
+    setDeletePolylineMap(map, index) {
+      this.$store.state.nodePolyline[index].setMap(map);
+    },
+    // 마커 화면에서 만 안보이고 배열에는 정의되어있음
+    deletePolyline(index) {
+      this.setDeletePolylineMap(null, index);
     },
   },
 };
 </script>
 
+<style>
+.adminNode_menubar {
+  margin: 20px;
+}
+</style>
