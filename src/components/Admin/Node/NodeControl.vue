@@ -226,6 +226,7 @@ export default {
         )
         .then((response) => {
           console.log("노드 Update" + response);
+          this.deleteNodeArray = [];
         })
         .catch((error) => {
           console.log(error);

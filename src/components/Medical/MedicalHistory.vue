@@ -3,9 +3,9 @@
     <h2>진료 내역</h2>
     <div class="medicalhistory_historyHeader">
       <select
-        class="medicalreceipt_clinic"
+        id="medicalreceipt_clinic"
         name="select"
-        style="width: 200px; height: 25px"
+        style="width: 150px; height: 25px"
         v-model="hospital_subject_name"
         @click="searchHospitalSubjectName(hospital_subject_name)"
       >
@@ -16,7 +16,6 @@
       <input class="medicalhistory_date" type="date" v-model="mydate" />
 
       진료 여부
-      <!-- 변경 사항 -->
       <div class="mdeicalhistory_choose">
         <input
           type="radio"
@@ -43,7 +42,6 @@
         />
         <label for="history_radioWait">대기</label>
       </div>
-      <!--  -->
       <v-btn @click="setClinic(hospital_subject_name)">조회</v-btn>
     </div>
 
@@ -58,7 +56,6 @@
         <td>진료상태</td>
         <td>진료종료</td>
       </tr>
-      <!-- 변경 사항 -->
       <tr
         @click="setPatientInfo(clinic_list, i)"
         v-for="(info, i) in clinic_list"
@@ -79,7 +76,6 @@
           >
         </td>
       </tr>
-      <!--  -->
     </table>
   </div>
 </template>
@@ -88,8 +84,6 @@
 import axios from "axios";
 import Pusher from "pusher-js";
 import { EventBus } from "../../utils/bus";
-//변경 사항 -------------
-// npm install -S pusher-js
 
 export default {
   data: () => {
@@ -258,4 +252,10 @@ export default {
 };
 </script>
 <style scoped>
+#medicalreceipt_clinic {
+  display: inline-block;
+  background-color: aliceblue;
+  border-radius: 10px;
+  margin : 0 20px;
+}
 </style>

@@ -68,7 +68,9 @@ export default {
       deleteNodeArray: [],
     };
   },
-  mounted() {},
+  mounted() {
+    this.searchNodeInfo();
+  },
   methods: {
     ////////////////////////////////////////////////////////
     // 실내 동선 설정 페이지 아이콘 설정
@@ -80,7 +82,6 @@ export default {
         this.eventOn = true;
       } else if (this.component == "노드 거리 설정") {
         this.eventOn = false;
-        this.searchNodeInfo();
       }
     },
     /////////////////////////////////////////////////////////////////

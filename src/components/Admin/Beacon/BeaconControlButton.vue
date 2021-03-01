@@ -35,6 +35,7 @@ export default {
   methods: {
     // 이전 자료 불러오기
     getBeforeBeaconInfo() {
+      this.$store.state.AdminControlBeacon = [];
       const url = this.$store.state.url + "/api/admin/beacon_setting_main";
 
       axios
@@ -82,9 +83,18 @@ export default {
     clearMarker(beaconfloor) {
       this.setMaponAll(null, beaconfloor);
     },
+
+    setDeleteAll(map) {
+      for (var i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
+        this.$store.state.beaconControlMarkers[i].setMap(map);
+      }
+    },
+    deleteMarker() {
+      this.setDeleteAll(null);
+    },
     // 배열 안에 등록되어 있는 마커 모두 삭제
     deleteMarkers() {
-      this.clearMarker();
+      this.deleteMarker();
       this.$store.state.AdminControlBeacon = [];
       this.$store.state.beaconControlMarkers = [];
       console.log("비콘 데이터 삭제");
