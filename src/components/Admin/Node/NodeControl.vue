@@ -4,6 +4,7 @@
     <table>
       <tr>
         <td>순번</td>
+        <td>노드 번호</td>
         <td>위도</td>
         <td>경도</td>
         <td>층수</td>
@@ -12,6 +13,7 @@
       </tr>
       <tr v-for="(nodeInfo, i) in this.$store.state.nodeControlInfo" :key="i">
         <td>{{ i + 1 }}</td>
+        <td><input type="text" v-model="nodeInfo.node_id" /></td>
         <td><input type="text" v-model="nodeInfo.lat" /></td>
         <td><input type="text" v-model="nodeInfo.lng" /></td>
         <td><input type="text" v-model="nodeInfo.floor" /></td>
@@ -81,6 +83,7 @@ export default {
         console.log(data);
         this.$store.state.nodeControlInfo.push({
           floor: this.$store.state.floorBuilding,
+          node_id : null,
           lat: data.latLng.lat(),
           lng: data.latLng.lng(),
         });

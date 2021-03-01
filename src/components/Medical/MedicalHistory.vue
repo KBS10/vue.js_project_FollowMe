@@ -256,6 +256,6 @@ export default {
   display: inline-block;
   background-color: aliceblue;
   border-radius: 10px;
-  margin : 0 20px;
+  margin: 0 20px;
 }
 </style>

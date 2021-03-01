@@ -13,7 +13,7 @@
       <tr v-for="(nodeRoom, i) in this.nodeRoomList" :key="i">
         <!-- <td>{{ i + 1 }}</td> -->
         <td>{{ nodeRoom.room_location_id }}</td>
-        <td><input type="text" v-model="nodeRoom.room_node" /></td>
+        <td><input type="text" v-model="nodeRoom.room_node" disabled /></td>
         <td><input type="text" v-model="nodeRoom.room_name" /></td>
         <td><input type="text" v-model="nodeRoom.room_info" /></td>
         <button class="beaconcontrolbutton_delete" @click="deleteNodeRoom(i)">
@@ -83,7 +83,7 @@ export default {
         room_info: "",
       };
       this.nodeRoomList.push(roomInfo);
-      console.log(this.nodeRoomList)
+      console.log(this.nodeRoomList);
     },
     deleteNodeRoom(index) {
       this.$delete(this.nodeRoomList, index);
