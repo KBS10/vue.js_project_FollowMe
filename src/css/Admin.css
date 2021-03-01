@@ -227,9 +227,8 @@
     text-align: center;
 }
 .BeaconControlInfo .beaconcontrolInfo_table{
-    width: 700px;
+    width: 1200px;
     margin: 0 auto;
-    border: solid 1px;
     border-collapse: collapse;
 }
 .beaconcontrolInfo_table thead{
@@ -238,4 +237,23 @@
 }
 .beaconcontrolInfo_table td{
     border: solid 1px;
+}
+.beaconcontrolInfo_table .beaconNumber{
+    text-align: center;
+}
+.beaconcontrolInfo_table .beaconInfoUUID{
+    width: 200px;
+}
+.beaconcontrolInfo_table .beaconInfoMajor,
+.beaconcontrolInfo_table .beaconInfominor,
+.beaconcontrolInfo_table .beaconInfominorGroup{
+    width: 50px;
+}
+.beaconcontrolInfo_table .beaconInfoBeaconScanner{
+    width: 100px;
+}
+.beaconcontrolInfo_table .beaconInfoLat,
+.beaconcontrolInfo_table .beaconInfominorLng{
+    width: 150px;
+
 }

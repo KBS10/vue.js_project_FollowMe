@@ -10,6 +10,8 @@
           <td>minor</td>
           <td>lat</td>
           <td>lng</td>
+          <td>beacon scanner</td>
+          <td>group</td>
           <td>삭제</td>
         </tr>
       </thead>
@@ -18,16 +20,59 @@
           v-for="(beacon, i) in this.$store.state.AdminControlBeacon"
           :key="i"
         >
-          <td>{{ i + 1 }}</td>
+          <td class="beaconNumber">{{ i + 1 }}</td>
           <td>
-            <input type="text" v-model="beacon.uuid" />
+            <input 
+              class="beaconInfoUUID" type="text" v-model="beacon.uuid" />
           </td>
-          <td><input type="text" v-model="beacon.major" required /></td>
           <td>
-            <input type="text" v-model="beacon.beacon_id_minor" required />
+            <input
+              class="beaconInfoMajor"
+              type="text"
+              v-model="beacon.major"
+              required
+            />
           </td>
-          <td><input type="text" v-model="beacon.lat" required /></td>
-          <td><input type="text" v-model="beacon.lng" required /></td>
+          <td>
+            <input
+              class="beaconInfominor"
+              type="text"
+              v-model="beacon.beacon_id_minor"
+              required
+            />
+          </td>
+          <td>
+            <input
+              class="beaconInfoLat"
+              type="text"
+              v-model="beacon.lat"
+              required
+            />
+          </td>
+          <td>
+            <input
+              class="beaconInfominorLng"
+              type="text"
+              v-model="beacon.lng"
+              required
+            />
+          </td>
+          <td>
+            <input
+              class="beaconInfoBeaconScanner"
+              type="text"
+              v-model="beacon.beacon_scanner_id"
+              required
+            />
+          </td>
+          <td>
+            <input
+              class="beaconInfominorGroup"
+              type="text"
+              v-model="beacon.group"
+              required
+            />
+          </td>
           <td>
             <button class="beaconcontrolbutton_delete" @click="deleteBeacon(i)">
               <img src="../../../img/trash.png" />

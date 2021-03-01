@@ -30,6 +30,11 @@
                 room.room_location_id === nodeInfo.room_id ? true : false
               "
               :value="room.room_location_id"
+              :disabled="
+                room.check == 1 && room.room_location_id !== nodeInfo.room_id
+                  ? true
+                  : false
+              "
             >
               {{ room.room_name }}
             </option>
@@ -57,12 +62,18 @@ export default {
       nodeImage:
         "https://user-images.githubusercontent.com/53847348/107948135-c7297700-6fd6-11eb-98d6-d618a826b52f.png",
       deleteNodeArray: [],
-      room_list: [], //전체 목록
+      room_list: [], //방 전체 목록
     };
   },
   mounted() {
     this.searchNodeControl();
     this.checkNodeRole();
+  },
+  watch: {
+    room_list: function (newVal, oldVal) {
+      console.log(newVal);
+      console.log(oldVal);
+    },
   },
   methods: {
     checkNodeRole() {
@@ -178,13 +189,28 @@ export default {
       this.$delete(this.$store.state.nodeControlInfo, index);
       this.$delete(this.$store.state.nodeControlMarkers, index);
     },
+
+    //방 변경 이벤트
     room_change(i, event) {
       let room_id = event.target.value;
-      if (event.target.value == "없음") room_id = null;
+      let room_index = event.target.selectedIndex;
+      console.log(this.room_list);
+      console.log(this.$store.state.nodeControlInfo[i]["room_id"]);
+      if (room_id == "없음") {
+        let room_previous_index = (element) =>
+          element.room_location_id ==
+          this.$store.state.nodeControlInfo[i]["room_id"];
+        room_id = null;
+        this.room_list[this.room_list.findIndex(room_previous_index)].check = 0;
+      } else {
+        this.room_list[room_index].check = 1;
+      }
       this.$store.state.nodeControlInfo[i]["room_id"] = room_id;
     },
+
     NodeUpdate() {
       console.log(this.$store.state.nodeControlInfo);
+      console.log(this.room_list);
       axios
         .post(
           this.$store.state.url + "/api/admin/node_update",

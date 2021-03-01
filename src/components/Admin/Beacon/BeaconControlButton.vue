@@ -70,11 +70,11 @@ export default {
     setMaponAll(map, beaconfloor) {
       for (var i = 0; i < this.$store.state.AdminControlBeacon.length; i++) {
         if (this.$store.state.beaconControlMarkers[i].floor != beaconfloor) {
-          this.$store.state.beaconControlMarkers[i].setMap(map);
-        } else {
           this.$store.state.beaconControlMarkers[i].setMap(
             this.$store.state.beaconControlMap
           );
+        } else {
+          this.$store.state.beaconControlMarkers[i].setMap(map);
         }
       }
     },

@@ -118,16 +118,16 @@ export default {
     setMaponAll(map, beaconfloor) {
       for (var i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
         if (this.$store.state.beaconInfoMarkers[i].floor != beaconfloor) {
-          this.$store.state.beaconInfoMarkers[i].setMap(map);
-        } else {
           this.$store.state.beaconInfoMarkers[i].setMap(
             this.$store.state.beaconInfoMap
           );
+        } else {
+          this.$store.state.beaconInfoMarkers[i].setMap(map);
         }
       }
     },
     attachSecretMessage(marker, secretMessage) {
-      console.log(secretMessage);
+      // console.log(secretMessage);
       const infoWindowMessage = "Minor : " + secretMessage.beacon_id_minor;
       const infowindow = new window.google.maps.InfoWindow({
         content: infoWindowMessage,
@@ -154,7 +154,10 @@ export default {
         floor: major,
       });
       this.$store.state.beaconInfoMarkers.push(marker);
-      this.attachSecretMessage(marker, this.$store.state.AdminInfoBeacon[index]);
+      this.attachSecretMessage(
+        marker,
+        this.$store.state.AdminInfoBeacon[index]
+      );
     },
     addCircle(lat, lng, major) {
       const circle = new window.google.maps.Circle({
