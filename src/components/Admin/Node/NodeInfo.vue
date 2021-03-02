@@ -8,6 +8,7 @@
         <td>출발점</td>
         <td>도착점</td>
         <td>거리</td>
+        <td>삭제</td>
       </tr>
       <tr v-for="(node, i) in this.$store.state.NodeDistance" :key="i">
         <td>{{ i + 1 }}</td>
@@ -15,6 +16,11 @@
         <td><input type="text" v-model="node.node_A" /></td>
         <td><input type="text" v-model="node.node_B" /></td>
         <td><input type="text" v-model="node.distance" /></td>
+        <td>
+          <button @click="deleteNodeDistance(i)">
+            <img src="../../../img/trash.png" />
+          </button>
+        </td>
       </tr>
     </table>
     <v-btn @click="postNodeDistance()">노드 거리 설정</v-btn>
@@ -77,7 +83,7 @@ export default {
           distance: result,
         };
         this.$store.state.NodeDistance.push(nodeDistanceObject);
-      this.addPolylineToMap(path, distance_id);
+        this.addPolylineToMap(path, distance_id);
       }
       let betweenNodeDistance = result >= 1000;
       console.log(betweenNodeDistance ? result / 1000 : result);
@@ -104,6 +110,11 @@ export default {
         this.deleteNodePolyline(distance_id);
       });
       flightPath.addListener("mouseover", () => {});
+    },
+    deleteNodeDistance(Index) {
+      this.deletePolyline(Index);
+      this.$delete(this.$store.state.nodePolyline, Index);
+      this.$delete(this.$store.state.NodeDistance, Index);
     },
     ////////////////////////////////////////////////////////
     // 노드 폴리라인 삭제 함수

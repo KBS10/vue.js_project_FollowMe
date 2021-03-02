@@ -68,9 +68,7 @@ export default {
       deleteNodeArray: [],
     };
   },
-  mounted() {
-    this.searchNodeInfo();
-  },
+  mounted() {},
   methods: {
     ////////////////////////////////////////////////////////
     // 실내 동선 설정 페이지 아이콘 설정
@@ -82,7 +80,36 @@ export default {
         this.eventOn = true;
       } else if (this.component == "노드 거리 설정") {
         this.eventOn = false;
+        if (this.$store.state.nodeDistanceMarkers.length > 1) {
+          for (let i = 0; i < this.$store.state.nodePolyline.length; i++) {
+            this.setDeletePolylineMap(null, i);
+          }
+          for (
+            let i = 0;
+            i < this.$store.state.nodeDistanceMarkers.length;
+            i++
+          ) {
+            this.deleteNodeMarker(i);
+          }
+          this.$store.state.NodeInfoInfo = [];
+          this.$store.state.nodeDistanceMarkers = [];
+          this.$store.state.NodeDistance = [];
+          this.$store.state.nodePolyline = [];
+        }
+
+        this.searchNodeInfo();
       }
+    },
+    // Sets the map on all markers in the array.
+    setMaponAll(map, index) {
+      this.$store.state.nodeDistanceMarkers[index].setMap(map);
+    },
+    // 마커 화면에서 만 안보이고 배열에는 정의되어있음
+    clearMarker(index) {
+      this.setMaponAll(null, index);
+    },
+    deleteNodeMarker(index) {
+      this.clearMarker(index);
     },
     /////////////////////////////////////////////////////////////////
     // 노드 정보 찾기 함수
@@ -95,10 +122,6 @@ export default {
           },
         })
         .then((response) => {
-          this.$store.state.NodeInfoInfo = [];
-          this.$store.state.nodeDistanceMarkers = [];
-          this.$store.state.NodeDistance = [];
-          this.$store.state.nodePolyline = [];
           // console.log("노드 정보 : ", response);
           // Node Marker 추가
           for (let i = 0; i < response.data.node_info.length; i++) {
