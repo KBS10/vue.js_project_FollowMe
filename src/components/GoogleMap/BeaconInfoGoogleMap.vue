@@ -124,7 +124,7 @@ export default {
         document.getElementById("BeaconInfoGoogleMap"),
         this.mapOptions
       );
-
+      
       // bounds - 왼쪽하단의 좌표와, 오른쪽 상단의 좌표를 구함.
       const bounds = new window.google.maps.LatLngBounds(
         new window.google.maps.LatLng(35.89651393057683, 128.6201298818298),

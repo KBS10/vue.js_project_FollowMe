@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       // 소켓 서버 접속
-      socket: io("http://172.26.2.132:3000/"),
+      // socket: io("http://172.26.2.132:3000/"),
+      socket: io("http://192.168.0.26:3000/"),
       beaconImage:
         "https://user-images.githubusercontent.com/53847348/99767420-5ba24b80-2b46-11eb-8b3c-a9b686bb8c59.png",
       beaconErrorImage:
@@ -37,51 +38,54 @@ export default {
       circleInfo: [],
     };
   },
-
   mounted() {
     this.getInfoBeacon();
+    this.socketBeaconInfo();
     // this.initMap();
-    const icons1 = {
-      url: this.beaconImage,
-      scaledSize: new window.google.maps.Size(30, 35),
-      anchor: new window.google.maps.Point(10, 10),
-    };
-    const icons2 = {
-      url: this.beaconErrorImage,
-      scaledSize: new window.google.maps.Size(20, 25),
-      anchor: new window.google.maps.Point(10, 10),
-    };
-    // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
-    this.socket.on("beaconInfo", (data) => {
-      for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
-        if (
-          this.$store.state.AdminInfoBeacon[i].beacon_id_minor == data.Minor
-        ) {
-          this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
-          this.$store.state.AdminInfoBeacon[i].Error = data.Error;
-
-          if (this.$store.state.AdminInfoBeacon[i].Error == "양호") {
-            this.$store.state.beaconInfoMarkers[i].icon = icons1;
-          }
-        }
-      }
-    });
-    this.socket.on("beaconError", (data) => {
-      for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
-        if (
-          this.$store.state.AdminInfoBeacon[i].beacon_id_minor == data.Minor
-        ) {
-          this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
-          this.$store.state.AdminInfoBeacon[i].Error = data.Error;
-          if (this.$store.state.AdminInfoBeacon[i].Error == "이상") {
-            this.$store.state.beaconInfoMarkers[i].icon = icons2;
-          }
-        }
-      }
-    });
   },
-
+  updated() {},
   methods: {
+    socketBeaconInfo() {
+      const icons1 = {
+        url: this.beaconImage,
+        scaledSize: new window.google.maps.Size(30, 35),
+        anchor: new window.google.maps.Point(10, 10),
+      };
+      const icons2 = {
+        url: this.beaconErrorImage,
+        scaledSize: new window.google.maps.Size(20, 25),
+        anchor: new window.google.maps.Point(10, 10),
+      };
+      // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
+      this.socket.on("beaconInfo", (data) => {
+        // console.log(data);
+        for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
+          if (
+            this.$store.state.AdminInfoBeacon[i].beacon_id_minor == data.Minor
+          ) {
+            this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
+            this.$store.state.AdminInfoBeacon[i].Error = data.Error;
+
+            if (this.$store.state.AdminInfoBeacon[i].Error == "양호") {
+              this.$store.state.beaconInfoMarkers[i].icon = icons1;
+            }
+          }
+        }
+      });
+      this.socket.on("beaconError", (data) => {
+        for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
+          if (
+            this.$store.state.AdminInfoBeacon[i].beacon_id_minor == data.Minor
+          ) {
+            this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
+            this.$store.state.AdminInfoBeacon[i].Error = data.Error;
+            if (this.$store.state.AdminInfoBeacon[i].Error == "이상") {
+              this.$store.state.beaconInfoMarkers[i].icon = icons2;
+            }
+          }
+        }
+      });
+    },
     getInfoBeacon() {
       this.$store.state.AdminInfoBeacon = [];
       const url = this.$store.state.url + "/api/admin/beacon_defect_check_main";
@@ -92,7 +96,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response);
+          console.log("확인" + response);
           for (let i = 0; i < response.data.beacon_info.length; i++) {
             this.$store.state.AdminInfoBeacon.push(
               response.data.beacon_info[i]
@@ -118,11 +122,11 @@ export default {
     setMaponAll(map, beaconfloor) {
       for (var i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
         if (this.$store.state.beaconInfoMarkers[i].floor != beaconfloor) {
+          this.$store.state.beaconInfoMarkers[i].setMap(map);
+        } else {
           this.$store.state.beaconInfoMarkers[i].setMap(
             this.$store.state.beaconInfoMap
           );
-        } else {
-          this.$store.state.beaconInfoMarkers[i].setMap(map);
         }
       }
     },
