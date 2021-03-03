@@ -45,6 +45,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response);
           console.log(response.data.beacon_info);
           if (response.data.error == "Unauthorized") {
             alert("이전 자료가 없습니다. 다시확인해주세요");
@@ -57,7 +58,8 @@ export default {
             this.addMarker(
               response.data.beacon_info[i].lat,
               response.data.beacon_info[i].lng,
-              response.data.beacon_info[i].major
+              response.data.beacon_info[i].major,
+              response.data.beacon_info[i].beacon_id_minor
             );
             this.clearMarker(response.data.beacon_info[i].major);
           }
@@ -99,7 +101,7 @@ export default {
       this.$store.state.beaconControlMarkers = [];
       console.log("비콘 데이터 삭제");
     },
-    addMarker(lat, lng, major) {
+    addMarker(lat, lng, major, minor) {
       const icons = {
         url: this.beaconImage,
         scaledSize: new window.google.maps.Size(20, 25),
@@ -110,8 +112,43 @@ export default {
         map: this.$store.state.beaconControlMap,
         icon: icons,
         floor: major,
+        minor: minor,
       });
       this.$store.state.beaconControlMarkers.push(marker);
+      this.clickBeaconControl(marker, minor);
+      this.attachSecretMessage(marker, minor);
+    },
+    attachSecretMessage(marker, secretMessage) {
+      const infoWindowMessage = "Minor : " + secretMessage;
+      const infowindow = new window.google.maps.InfoWindow({
+        content: infoWindowMessage,
+      });
+      marker.addListener("mouseover", () => {
+        infowindow.open(marker.get("map"), marker);
+      });
+    },
+    clickBeaconControl(marker, minor) {
+      marker.addListener("click", (data) => {
+        console.log(data);
+        this.deleteBeacon(minor);
+      });
+    },
+    deleteBeacon(minor) {
+      console.log(minor);
+      for (let i = 0; i < this.$store.state.beaconControlMarkers.length; i++) {
+        if (this.$store.state.beaconControlMarkers[i].minor === minor) {
+          this.deleteBeaconMarker(i);
+          this.$delete(this.$store.state.beaconControlMarkers, i);
+          this.$delete(this.$store.state.AdminControlBeacon, i);
+        }
+      }
+    },
+    setDeleteBeaconMap(map, index) {
+      this.$store.state.beaconControlMarkers[index].setMap(map);
+    },
+    // 마커 화면에서 만 안보이고 배열에는 정의되어있음
+    deleteBeaconMarker(index) {
+      this.setDeleteBeaconMap(null, index);
     },
   },
 };

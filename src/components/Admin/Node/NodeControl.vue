@@ -129,14 +129,17 @@ export default {
           console.log(error);
         });
     },
-    attachSecretMessage(marker, secretMessage) {
+    attachSecretMessage(marker, secretMessage,index) {
       const infoWindowMessage =
         "위도 : " + secretMessage.lat + "경도 : " + secretMessage.lng;
       const infowindow = new window.google.maps.InfoWindow({
         content: infoWindowMessage,
       });
-      marker.addListener("click", () => {
+      marker.addListener("mouseover", () => {
         infowindow.open(marker.get("map"), marker);
+      });
+      marker.addListener("click", () => {
+      this.deleteNode(index);
       });
     },
     addNodecontrolMarker(floor, lat, lng, index) {
@@ -154,7 +157,8 @@ export default {
       this.$store.state.nodeControlMarkers.push(marker);
       this.attachSecretMessage(
         marker,
-        this.$store.state.nodeControlInfo[index]
+        this.$store.state.nodeControlInfo[index],
+        index
       );
     },
 

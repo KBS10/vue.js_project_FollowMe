@@ -19,6 +19,7 @@
         >비콘 반경</v-btn
       > -->
     </div>
+    <h1>{{ checkBeaconRSSI }}</h1>
   </div>
 </template>
 
@@ -36,6 +37,7 @@ export default {
       beaconErrorImage:
         "https://user-images.githubusercontent.com/53847348/106530728-38c1e980-6530-11eb-9fed-89732ab47bf1.png",
       circleInfo: [],
+      checkBeaconRSSI: "",
     };
   },
   mounted() {
@@ -45,6 +47,22 @@ export default {
   },
   updated() {},
   methods: {
+    // checkMarkerAll(map, beaconfloor) {
+    //   for (var i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
+    //     if (this.$store.state.beaconInfoMarkers[i].floor != beaconfloor) {
+    //       this.$store.state.beaconInfoMarkers[i].setMap(map);
+    //     } else {
+    //       this.$store.state.beaconInfoMarkers[i].setMap(
+    //         this.$store.state.beaconInfoMap
+    //       );
+    //     }
+    //   }
+    // },
+    // // 마커 하면에서 만 안보이고 배열에는 정의되어있음
+    // checkMarker(beaconfloor) {
+    //   console.log(beaconfloor)
+    //   this.checkMarkerAll(null, beaconfloor);
+    // },
     socketBeaconInfo() {
       const icons1 = {
         url: this.beaconImage,
@@ -58,7 +76,6 @@ export default {
       };
       // 소켓 on으로 node.js 소켓서버에서 보내는 Data 받음
       this.socket.on("beaconInfo", (data) => {
-        // console.log(data);
         for (let i = 0; i < this.$store.state.AdminInfoBeacon.length; i++) {
           if (
             this.$store.state.AdminInfoBeacon[i].beacon_id_minor == data.Minor
@@ -67,7 +84,7 @@ export default {
             this.$store.state.AdminInfoBeacon[i].Error = data.Error;
 
             if (this.$store.state.AdminInfoBeacon[i].Error == "양호") {
-              this.$store.state.beaconInfoMarkers[i].icon = icons1;
+              this.$store.state.beaconInfoMarkers[i].setIcon(icons1);
             }
           }
         }
@@ -80,7 +97,7 @@ export default {
             this.$store.state.AdminInfoBeacon[i].RSSI = data.RSSI;
             this.$store.state.AdminInfoBeacon[i].Error = data.Error;
             if (this.$store.state.AdminInfoBeacon[i].Error == "이상") {
-              this.$store.state.beaconInfoMarkers[i].icon = icons2;
+              this.$store.state.beaconInfoMarkers[i].setIcon(icons2);
             }
           }
         }
